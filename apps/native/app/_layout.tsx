@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/performance/noBarrelFile: <Need this one to exist for boundary catches> */
 import '@/global.css';
 
 import { NAV_THEME } from '@/lib/theme';
@@ -18,7 +19,10 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-      <Stack />
+      <Stack>
+        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+      </Stack>
       <PortalHost />
     </ThemeProvider>
   );

@@ -15,7 +15,7 @@
       "tsconfigPaths": true
     },
     "newArchEnabled": true,
-    "orientation": "automatic",
+    "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -34,8 +34,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.develophantom.lifehack",
-      "edgeToEdgeEnabled": true,
-      "minSdkVersion": 24
+      "edgeToEdgeEnabled": true
     },
     "extra": {
       "router": {},
