@@ -86,6 +86,23 @@ export type AIInsight = {
   category: "financial" | "habit" | "general";
 };
 
+export type DailyMetrics = {
+  steps: number;
+  sleepHours: number;
+  waterIntake: number;
+  mood: "excellent" | "good" | "okay" | "poor";
+};
+
+export type CalendarEvent = {
+  id: string;
+  title: string;
+  time?: string;
+  type: "meeting" | "task" | "habit" | "birthday" | "reminder" | "transaction";
+  priority: "high" | "medium" | "low";
+  completed?: boolean;
+  color?: string;
+};
+
 export type DashboardData = {
   totalBalance: number;
   currency: string;
@@ -105,6 +122,13 @@ export type DashboardData = {
   };
   healthScore: "excellent" | "good" | "needs-attention";
   lastUpdated: string;
+  // New fields for reference design
+  dailyMetrics: DailyMetrics;
+  todayEvents: CalendarEvent[];
+  userName: string;
+  totalMeetings: number;
+  totalTasks: number;
+  availabilityStatus: string;
 };
 
 export type QuickAction = {
@@ -309,6 +333,35 @@ const initialDashboardData: DashboardData = {
   financialSummary: { overBudget: 0, onTrack: 0, totalCategories: 0 },
   healthScore: "needs-attention",
   lastUpdated: new Date().toISOString(),
+  // New fields for reference design
+  dailyMetrics: {
+    steps: 4700,
+    sleepHours: 7.3,
+    waterIntake: 6,
+    mood: "good",
+  },
+  todayEvents: [
+    {
+      id: "event_1",
+      title: "Daria's 20th Birthday",
+      type: "birthday",
+      priority: "high",
+      color: "red",
+    },
+    {
+      id: "event_2", 
+      title: "Wake up",
+      time: "09:00",
+      type: "reminder",
+      priority: "medium",
+      completed: true,
+      color: "yellow",
+    },
+  ],
+  userName: "Alexey",
+  totalMeetings: 3,
+  totalTasks: 2,
+  availabilityStatus: "You're mostly free after 4 pm",
 };
 
 export const useDashboardStore = create<DashboardStore>()(
@@ -679,7 +732,7 @@ export const useDashboardStore = create<DashboardStore>()(
       },
       
       updateDashboardData: () => {
-        const { accounts, habits, budgetCategories } = get();
+        const { accounts, habits, budgetCategories, transactions } = get();
         const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
         
         const onTrackHabits = habits.filter((h) => h.currentStreak >= 3).length;
@@ -697,6 +750,31 @@ export const useDashboardStore = create<DashboardStore>()(
           healthScore = "excellent";
         } else if (onTrackHabits >= habits.length * 0.5 && overBudget <= 1) {
           healthScore = "good";
+        }
+
+        // Generate today's events including recent transactions
+        const today = new Date();
+        const recentTransactions = transactions.slice(0, 2).map((tx, index) => ({
+          id: `tx_event_${tx.id}`,
+          title: tx.description,
+          time: new Date(tx.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+          type: "transaction" as const,
+          priority: "medium" as const,
+          color: tx.type === 'income' ? 'green' : 'blue',
+        }));
+
+        const allTodayEvents = [
+          ...initialDashboardData.todayEvents,
+          ...recentTransactions,
+        ];
+
+        // Calculate availability status based on time
+        const hour = today.getHours();
+        let availabilityStatus = "You have a productive day ahead";
+        if (hour >= 16) {
+          availabilityStatus = "You're mostly free after 4 pm";
+        } else if (hour >= 12) {
+          availabilityStatus = "You have a busy afternoon ahead";
         }
         
         set({
@@ -716,6 +794,18 @@ export const useDashboardStore = create<DashboardStore>()(
             },
             healthScore,
             lastUpdated: new Date().toISOString(),
+            // New fields for reference design
+            dailyMetrics: {
+              steps: 4700 + Math.floor(Math.random() * 1000), // Simulate step variation
+              sleepHours: 7.3,
+              waterIntake: 6,
+              mood: healthScore === "excellent" ? "excellent" : healthScore === "good" ? "good" : "okay",
+            },
+            todayEvents: allTodayEvents,
+            userName: "Alexey",
+            totalMeetings: 3,
+            totalTasks: 2,
+            availabilityStatus,
           },
         });
       },
