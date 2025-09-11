@@ -1,3 +1,4 @@
+import React from "react";
 import { router } from "expo-router";
 import { UserIcon } from "lucide-react-native";
 import { useState } from "react";
@@ -121,8 +122,8 @@ export default function ProfileSetupScreen() {
               <View className="gap-2">
                 <Text className="font-medium">Currency</Text>
                 <Select
-                  onValueChange={(option) => setCurrency(option.value)}
-                  value={currency}
+                  onValueChange={(option) => option && setCurrency(option.value)}
+                  value={CURRENCIES.find(curr => curr.value === currency)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select your currency" />
@@ -144,8 +145,8 @@ export default function ProfileSetupScreen() {
               <View className="gap-2">
                 <Text className="font-medium">Time Zone</Text>
                 <Select
-                  onValueChange={(option) => setTimezone(option.value)}
-                  value={timezone}
+                  onValueChange={(option) => option && setTimezone(option.value)}
+                  value={TIMEZONES.find(tz => tz.value === timezone)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select your time zone" />

@@ -20,7 +20,10 @@
       "db:generate": "turbo -F server db:generate",
       "db:migrate": "turbo -F server db:migrate"
    },
-   "dependencies": {},
+   "dependencies": {
+      "@gorhom/bottom-sheet": "^5.2.6",
+      "@hookform/resolvers": "^5.2.1"
+   },
    "devDependencies": {
       "turbo": "^2.5.4",
       "@biomejs/biome": "2.2.2",
