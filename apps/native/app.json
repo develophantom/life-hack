@@ -1,53 +1,63 @@
 {
-  "expo": {
-    "name": "lifehack",
-    "slug": "lifehack-app",
-    "version": "1.0.0",
-    "scheme": "lifehack-app",
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
-    "plugins": [
-      "expo-router",
-      "expo-secure-store",
-      "expo-web-browser",
-      "expo-build-properties"
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "tsconfigPaths": true
-    },
-    "newArchEnabled": true,
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.develophantom.lifehack"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+   "expo": {
+      "name": "lifehack",
+      "slug": "lifehack-app",
+      "version": "1.0.0",
+      "scheme": "lifehack-app",
+      "web": {
+         "bundler": "metro",
+         "output": "static",
+         "favicon": "./assets/images/favicon.png"
       },
-      "package": "com.develophantom.lifehack"
-    },
-    "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "31021a0e-f568-4e75-b6b7-a47bb08b5623"
-      }
-    },
-    "owner": "thedevelophantom"
-  }
+      "plugins": [
+         "expo-router",
+         "expo-secure-store",
+         "expo-web-browser",
+         "expo-build-properties",
+         [
+            "expo-font",
+            {
+               "fonts": [
+                  "node_modules/@expo-google-fonts/lato/900Black/Lato_900Black.ttf",
+                  "node_modules/@expo-google-fonts/lato/700Bold/Lato_700Bold.ttf",
+                  "node_modules/@expo-google-fonts/lato/400Regular/Lato_400Regular.ttf"
+               ]
+            }
+         ]
+      ],
+      "experiments": {
+         "typedRoutes": true,
+         "tsconfigPaths": true
+      },
+      "newArchEnabled": true,
+      "orientation": "portrait",
+      "icon": "./assets/images/icon.png",
+      "userInterfaceStyle": "light",
+      "splash": {
+         "image": "./assets/images/splash.png",
+         "resizeMode": "contain",
+         "backgroundColor": "#ffffff"
+      },
+      "assetBundlePatterns": [
+         "**/*"
+      ],
+      "ios": {
+         "supportsTablet": true,
+         "bundleIdentifier": "com.develophantom.lifehack"
+      },
+      "android": {
+         "adaptiveIcon": {
+            "foregroundImage": "./assets/images/adaptive-icon.png",
+            "backgroundColor": "#ffffff"
+         },
+         "package": "com.develophantom.lifehack"
+      },
+      "extra": {
+         "router": {},
+         "eas": {
+            "projectId": "31021a0e-f568-4e75-b6b7-a47bb08b5623"
+         }
+      },
+      "owner": "thedevelophantom"
+   }
 }
