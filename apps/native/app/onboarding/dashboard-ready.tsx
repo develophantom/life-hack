@@ -35,7 +35,14 @@ export default function DashboardReadyScreen() {
 
   return (
     <Container>
-      <ScrollView contentContainerClassName="flex-1 items-center justify-center gap-8 p-6">
+      <ScrollView
+        className="flex-1 gap-8"
+        contentContainerStyle={{
+          padding: 24,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         {/* Celebration */}
         <View className="items-center gap-4">
           <View className="rounded-full bg-green-500 p-6">
