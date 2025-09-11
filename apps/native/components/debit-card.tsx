@@ -53,7 +53,7 @@ export function DebitCard({
   };
 
   return (
-    <View className={`w-80 h-48 ${getColorClass()} rounded-3xl p-6 shadow-2xl relative overflow-hidden ${className}`}>
+    <View className={`w-96 h-60 ${getColorClass()} rounded-3xl p-6 shadow-2xl relative overflow-hidden ${className}`}>
       {/* Background Pattern/Texture */}
       <View className="absolute inset-0 bg-black/10 rounded-3xl" />
 
@@ -62,7 +62,7 @@ export function DebitCard({
       <View className="absolute -bottom-8 -left-8 w-24 h-24 bg-white/5 rounded-full" />
 
       {/* Top Row - Icons */}
-      <View className="flex-row justify-between items-start mb-6 relative z-10">
+      <View className="flex-row justify-between items-start mb-4 relative z-10">
         {/* Bank/Star Icon */}
         <View className="w-10 h-10 items-center justify-center">
           <View className="w-8 h-8 bg-white/20 rounded-full items-center justify-center">
@@ -85,7 +85,7 @@ export function DebitCard({
 
       {/* Card Number */}
       {cardNumber && (
-        <View className="mb-6 relative z-10">
+        <View className="mb-4 relative z-10">
           <Text className="text-white text-xl font-mono tracking-widest">
             {formatCardNumber(cardNumber)}
           </Text>
@@ -93,15 +93,15 @@ export function DebitCard({
       )}
 
       {/* Expiry Date */}
-      <View className="mb-6 relative z-10">
+      <View className="mb-4 relative z-10">
         <Text className="text-white/90 text-sm font-semibold">
           {formatExpiryDate(expiryDate)}
         </Text>
       </View>
 
       {/* Cardholder Name */}
-      <View className="mb-8 relative z-10">
-        <Text className="text-white text-xl font-bold leading-tight">
+      <View className="mb-4 relative z-10">
+        <Text className="text-white text-lg font-bold leading-tight">
           {cardholderName.toUpperCase()}
         </Text>
       </View>

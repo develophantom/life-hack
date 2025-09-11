@@ -24,7 +24,7 @@ export function CardStack({
   if (visibleCards.length === 0) {
     return (
       <View className={`relative mb-8 ${className}`}>
-        <View className="w-80 h-48 bg-slate-700 rounded-3xl items-center justify-center shadow-2xl">
+        <View className="w-96 h-60 bg-slate-700 rounded-3xl items-center justify-center shadow-2xl">
           <Text className="text-white/70 text-lg font-medium">
             No cards available
           </Text>
