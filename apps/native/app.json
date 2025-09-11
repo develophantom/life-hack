@@ -40,8 +40,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.develophantom.lifehack",
-      "edgeToEdgeEnabled": true
+      "package": "com.develophantom.lifehack"
     },
     "extra": {
       "router": {},
