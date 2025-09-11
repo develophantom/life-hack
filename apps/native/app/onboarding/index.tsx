@@ -1,3 +1,4 @@
+import React from "react";
 import { router } from "expo-router";
 import { HeartIcon, TrendingUpIcon, ZapIcon } from "lucide-react-native";
 import { View } from "react-native";
@@ -76,7 +77,7 @@ export default function WelcomeScreen() {
             <Text>Let's set up your dashboard</Text>
           </Button>
 
-          <Button onPress={() => router.push("/dashboard")} variant="ghost">
+          <Button onPress={() => router.push("/(dashboard)")} variant="ghost">
             <Text>Skip setup for now</Text>
           </Button>
         </View>
