@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/performance/noBarrelFile: <Need this one to exist for boundary catches> */
 import '@/global.css';
-
+import React from 'react';
 import { NAV_THEME } from '@/lib/theme';
 import { ThemeProvider } from '@react-navigation/native';
 import { PortalHost } from '@rn-primitives/portal';
@@ -20,8 +20,11 @@ export default function RootLayout() {
     <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
       <Stack>
+        <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }}  />
+        <Stack.Screen name="+not-found" options={{ headerShown: false }} />
       </Stack>
       <PortalHost />
     </ThemeProvider>
