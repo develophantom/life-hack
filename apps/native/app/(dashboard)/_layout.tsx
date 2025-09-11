@@ -1,9 +1,9 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { Stack } from 'expo-router'
+import { Tabs } from 'expo-router'
 
 export default function DashboardLayout() {
-	return (
-		<Stack screenOptions={{ headerShown: false }} />
-	)
+  return (
+    <Tabs screenOptions={{ headerShown: false }} />
+  )
 }

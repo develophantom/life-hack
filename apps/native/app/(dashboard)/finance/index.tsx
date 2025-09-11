@@ -1,42 +1,23 @@
 import { router } from "expo-router";
 import {
-  BarChart3Icon,
-  CreditCardIcon,
-  EditIcon,
-  MoreHorizontalIcon,
+  ArrowLeftIcon,
+  BellIcon,
+  MenuIcon,
   PlusIcon,
-  TrashIcon,
+  SearchIcon,
   TrendingUpIcon,
-  WalletIcon,
 } from "lucide-react-native";
-import React, { useState } from "react";
-import { ScrollView, View } from "react-native";
-import { Container } from "@/components/container";
-import { WeeklyFinanceSummary } from "@/components/dashboard/WeeklyFinanceSummary";
+import React from "react";
+import { ScrollView, View, StatusBar } from "react-native";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { CardStack } from "@/components/card-stack";
 import { Icon } from "@/components/ui/icon";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SlackIcon } from "@/components/slack-icon";
 import { Text } from "@/components/ui/text";
 import { useDashboardStore } from "@/lib/dashboard-store";
 
 export default function FinanceScreen() {
-  const {
-    accounts,
-    transactions,
-    budgetCategories,
-    getRecentTransactions,
-    deleteAccount,
-    deleteBudgetCategory,
-    deleteTransaction,
-  } = useDashboardStore();
-  const [activeTab, setActiveTab] = useState("overview");
+  const { accounts, transactions, getRecentTransactions } = useDashboardStore();
 
   const formatCurrency = (amount: number, currency = "USD") => {
     return new Intl.NumberFormat("en-US", {
@@ -45,559 +26,279 @@ export default function FinanceScreen() {
     }).format(amount);
   };
 
-  const getAccountIcon = (type: string) => {
-    switch (type) {
-      case "bank":
-        return WalletIcon;
-      case "credit":
-        return CreditCardIcon;
-      case "mobile":
-        return TrendingUpIcon;
-      default:
-        return WalletIcon;
-    }
+  const recentTransactions = getRecentTransactions(6);
+  const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
+  const monthlySpent = transactions
+    .filter((tx) => tx.type === "expense")
+    .reduce((sum, tx) => sum + tx.amount, 0);
+  const monthlyLimit = 10000;
+  const availableBalance = totalBalance - monthlySpent;
+  const spentPercentage = (monthlySpent / monthlyLimit) * 100;
+
+  // Generate cards from accounts
+  const generateCardsFromAccounts = () => {
+    return accounts.map((account, index) => {
+      // Generate a mock card number for display
+      const cardNumber = `1234 5678 9012 ${String(1000 + index).slice(-4)}`;
+
+      // Generate expiry date (2 years from now)
+      const expiryDate = new Date();
+      expiryDate.setFullYear(expiryDate.getFullYear() + 2);
+      const month = String(expiryDate.getMonth() + 1).padStart(2, '0');
+      const year = String(expiryDate.getFullYear()).slice(-2);
+
+      // Determine card type based on account type
+      let cardType = "Debit Card";
+      if (account.type === "credit") cardType = "Credit Card";
+      if (account.type === "mobile") cardType = "Prepaid Card";
+
+      return {
+        cardholderName: account.name.split(' ').map(word => word.toUpperCase()).join(' '),
+        expiryDate: `${month}/${year}`,
+        cardType: cardType as "Debit Card" | "Credit Card" | "Prepaid Card",
+        cardNumber: cardNumber,
+        bankName: account.name,
+      };
+    });
   };
 
-  const recentTransactions = getRecentTransactions(5);
+  const accountCards = generateCardsFromAccounts();
+
+  // Mock transaction data with icons and colors matching reference
+  const mockTransactions = [
+    {
+      id: "1",
+      name: "Figma",
+      amount: 375.00,
+      time: "2:31 PM",
+      icon: "F",
+      color: "bg-purple-500",
+    },
+    {
+      id: "2",
+      name: "Crunchbase",
+      amount: 49.00,
+      time: "Yesterday, 10:55 AM",
+      icon: "cb",
+      color: "bg-blue-500",
+    },
+    {
+      id: "3",
+      name: "Jason Green",
+      amount: 1240.21,
+      time: "Jun 20, 4:42 PM",
+      icon: "JG",
+      color: "bg-green-500",
+    },
+    {
+      id: "4",
+      name: "Framer",
+      amount: 23.00,
+      time: "Jun 20, 2:15 PM",
+      icon: "F",
+      color: "bg-black",
+    },
+    {
+      id: "5",
+      name: "Zoom",
+      amount: 289.90,
+      time: "Jun 19, 11:30 AM",
+      icon: "Z",
+      color: "bg-blue-500",
+    },
+    {
+      id: "6",
+      name: "Slack",
+      amount: 11.75,
+      time: "Jun 19, 9:15 AM",
+      icon: "S",
+      color: "bg-purple-600",
+    },
+  ];
 
   return (
-    <Container>
-      <ScrollView className="flex-1" contentContainerStyle={{ padding: 16 }}>
-        <View className="gap-6">
-          {/* Header */}
-          <View className="flex-row items-center justify-between">
-            <View>
-              <Text variant="h1">Finance</Text>
-              <Text variant="muted">Manage your money and track expenses</Text>
-            </View>
+    <View className="flex-1 bg-slate-900">
+      <StatusBar barStyle="light-content" backgroundColor="#0f172a" />
+
+      {/* Status Bar */}
+      <View className="flex-row justify-between items-center px-6 pt-12 pb-4">
+        <Text className="text-white text-sm font-medium">9:41</Text>
+        <View className="flex-row items-center gap-1">
+          <View className="w-1 h-1 bg-white rounded-full" />
+          <View className="w-1 h-1 bg-white rounded-full" />
+          <View className="w-1 h-1 bg-white rounded-full" />
+          <View className="w-1 h-1 bg-white rounded-full" />
+        </View>
+      </View>
+
+      {/* Header Section */}
+      <View className="px-6 pb-6">
+        <View className="flex-row items-center justify-between mb-6">
+          <View className="flex-row items-center gap-4">
             <Button
-              onPress={() => router.push("/finance/add-transaction")}
+              variant="ghost"
               size="sm"
+              onPress={() => router.back()}
+              className="p-2"
             >
-              <Icon as={PlusIcon} size={16} />
-              <Text>Add</Text>
+              <Icon as={MenuIcon} className="text-white" size={24} />
             </Button>
+            <View>
+              <Text className="text-white text-lg font-semibold">Welcome home</Text>
+              <Text className="text-white/80 text-sm">Pebrian Teguh</Text>
+            </View>
           </View>
 
-          {/* Finance Tabs */}
-          <Tabs
-            className="flex-1"
-            onValueChange={setActiveTab}
-            value={activeTab}
-          >
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="accounts">Accounts</TabsTrigger>
-              <TabsTrigger value="transactions">Transactions</TabsTrigger>
-              <TabsTrigger value="budgets">Budgets</TabsTrigger>
-            </TabsList>
+          <View className="flex-row items-center gap-3">
+            <Button variant="ghost" size="sm" className="p-2">
+              <Icon as={SearchIcon} className="text-white" size={20} />
+            </Button>
+            <Button variant="ghost" size="sm" className="p-2">
+              <Icon as={BellIcon} className="text-white" size={20} />
+            </Button>
+          </View>
+        </View>
 
-            <TabsContent className="flex-1" value="overview">
-              <View className="gap-4">
-                {/* Quick Stats */}
-                <View className="grid grid-cols-2 gap-4">
-                  <Card>
-                    <CardContent className="p-4">
-                      <View className="items-center gap-2">
-                        <Icon
-                          as={WalletIcon}
-                          className="text-green-500"
-                          size={24}
-                        />
-                        <Text className="font-semibold">Total Balance</Text>
-                        <Text className="font-bold text-green-600 text-lg">
-                          {formatCurrency(
-                            accounts.reduce((sum, acc) => sum + acc.balance, 0)
-                          )}
-                        </Text>
-                      </View>
-                    </CardContent>
-                  </Card>
+        {/* Balance Section */}
+        <View className="mb-8">
+          <View className="flex-row items-center justify-between mb-4">
+            <Text className="text-white text-lg font-semibold">Your Balance</Text>
+            <Text className="text-white/70 text-sm">Fri 30 December</Text>
+          </View>
 
-                  <Card>
-                    <CardContent className="p-4">
-                      <View className="items-center gap-2">
-                        <Icon
-                          as={BarChart3Icon}
-                          className="text-blue-500"
-                          size={24}
-                        />
-                        <Text className="font-semibold">This Month</Text>
-                        <Text className="font-bold text-blue-600 text-lg">
-                          {formatCurrency(
-                            transactions
-                              .filter((tx) => tx.type === "expense")
-                              .reduce((sum, tx) => sum + tx.amount, 0)
-                          )}
-                        </Text>
-                      </View>
-                    </CardContent>
-                  </Card>
+          <View className="flex-row items-center justify-between">
+            <View className="flex-1">
+              <Text className="text-white text-4xl font-bold text-shadow mb-2">
+                {formatCurrency(availableBalance)}
+              </Text>
+              <View className="flex-row items-center gap-2">
+                <Icon as={TrendingUpIcon} className="text-green-400" size={16} />
+                <Text className="text-green-400 text-sm font-semibold">
+                  +528.32 (12.3%)
+                </Text>
+              </View>
+            </View>
+
+            {/* Mini Chart Placeholder */}
+            <View className="w-16 h-8 items-center justify-center">
+              <View className="w-full h-full bg-white/10 rounded-full items-center justify-center">
+                <View className="flex-row items-end gap-0.5">
+                  <View className="w-1 h-2 bg-white/60 rounded-full" />
+                  <View className="w-1 h-3 bg-white/80 rounded-full" />
+                  <View className="w-1 h-1 bg-white/40 rounded-full" />
+                  <View className="w-1 h-4 bg-white rounded-full" />
+                  <View className="w-1 h-2 bg-white/60 rounded-full" />
                 </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
 
-                {/* Weekly Finance Summary */}
-                <WeeklyFinanceSummary />
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+        <View className="px-6">
+          {/* Card Stack Section */}
+          <CardStack cards={accountCards} maxVisible={3} />
 
-                {/* Recent Transactions */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Recent Transactions</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {recentTransactions.length > 0 ? (
-                      <View className="gap-3">
-                        {recentTransactions.map((transaction) => (
-                          <View
-                            className="flex-row items-center justify-between rounded-lg bg-background/50 p-3"
-                            key={transaction.id}
-                          >
-                            <View className="flex-row items-center gap-3">
-                              <View
-                                className={`rounded-full p-2 ${
-                                  transaction.type === "income"
-                                    ? "bg-green-100 dark:bg-green-900/20"
-                                    : "bg-red-100 dark:bg-red-900/20"
-                                }`}
-                              >
-                                <Icon
-                                  as={
-                                    transaction.type === "income"
-                                      ? TrendingUpIcon
-                                      : TrendingUpIcon
-                                  }
-                                  className={
-                                    transaction.type === "income"
-                                      ? "text-green-600 dark:text-green-400"
-                                      : "text-red-600 dark:text-red-400"
-                                  }
-                                  size={16}
-                                />
-                              </View>
-                              <View>
-                                <Text className="font-medium">
-                                  {transaction.description}
-                                </Text>
-                                <Text
-                                  className="text-muted-foreground"
-                                  variant="small"
-                                >
-                                  {transaction.category}
-                                </Text>
-                              </View>
-                            </View>
-                            <Text
-                              className={`font-semibold ${
-                                transaction.type === "income"
-                                  ? "text-green-600 dark:text-green-400"
-                                  : "text-red-600 dark:text-red-400"
-                              }`}
-                            >
-                              {transaction.type === "income" ? "+" : "-"}
-                              {formatCurrency(transaction.amount)}
-                            </Text>
-                          </View>
-                        ))}
-                      </View>
+          {/* Financial Summary */}
+          <View className="mb-8">
+            <View className="bg-slate-800 rounded-3xl p-6 shadow-2xl">
+              <View className="flex-row items-center justify-between mb-4">
+                <Text className="text-white text-lg font-semibold">Monthly Spending</Text>
+                <Text className="text-white/70 text-sm">
+                  {formatCurrency(monthlySpent)} of {formatCurrency(monthlyLimit)}
+                </Text>
+              </View>
+
+              {/* Progress Bar */}
+              <View className="mb-4">
+                <View className="h-3 bg-white/10 rounded-full overflow-hidden">
+                  <View
+                    className="h-full bg-green-500 rounded-full"
+                    style={{ width: `${Math.min(spentPercentage, 100)}%` }}
+                  />
+                </View>
+                <View className="flex-row justify-between mt-2">
+                  <Text className="text-white/70 text-xs">Spent</Text>
+                  <Text className="text-white/70 text-xs">
+                    {Math.round(spentPercentage)}%
+                  </Text>
+                </View>
+              </View>
+
+              <View className="flex-row gap-4">
+                <View className="flex-1">
+                  <Text className="text-white/70 text-sm">Available</Text>
+                  <Text className="text-white text-lg font-semibold">
+                    {formatCurrency(monthlyLimit - monthlySpent)}
+                  </Text>
+                </View>
+                <View className="flex-1">
+                  <Text className="text-white/70 text-sm">This Month</Text>
+                  <Text className="text-white text-lg font-semibold">
+                    {formatCurrency(monthlySpent)}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+
+          {/* Transactions Section */}
+          <View className="mb-8">
+            <View className="flex-row items-center justify-between mb-6">
+              <Text className="text-white text-xl font-bold">Recent Transactions</Text>
+              <Button variant="ghost" size="sm">
+                <Text className="text-white/70 text-sm">View All</Text>
+              </Button>
+            </View>
+
+            <View className="space-y-3">
+              {mockTransactions.map((transaction) => (
+                <View key={transaction.id} className="flex-row items-center justify-between py-4 px-4 bg-slate-800 rounded-2xl shadow-xl">
+                  <View className="flex-row items-center gap-4">
+                    {/* Transaction Icon */}
+                    {transaction.name === "Slack" ? (
+                      <SlackIcon />
                     ) : (
-                      <View className="items-center gap-4 py-8">
-                        <Icon
-                          as={WalletIcon}
-                          className="text-muted-foreground"
-                          size={48}
-                        />
-                        <View className="items-center gap-2">
-                          <Text className="font-semibold">
-                            No transactions yet
-                          </Text>
-                          <Text className="text-center" variant="muted">
-                            Add your first transaction to get started
-                          </Text>
-                        </View>
-                        <Button
-                          onPress={() =>
-                            router.push("/finance/add-transaction")
-                          }
-                        >
-                          <Icon as={PlusIcon} size={16} />
-                          <Text>Add Transaction</Text>
-                        </Button>
+                      <View className={`w-12 h-12 rounded-2xl ${transaction.color} items-center justify-center`}>
+                        <Text className="text-white font-bold text-lg">
+                          {transaction.icon}
+                        </Text>
                       </View>
                     )}
-                  </CardContent>
-                </Card>
-              </View>
-            </TabsContent>
 
-            <TabsContent className="flex-1" value="accounts">
-              <View className="gap-4">
-                {accounts.length > 0 ? (
-                  accounts.map((account) => (
-                    <Card key={account.id}>
-                      <CardContent className="p-4">
-                        <View className="flex-row items-center justify-between">
-                          <View className="flex-1 flex-row items-center gap-3">
-                            <Icon
-                              as={getAccountIcon(account.type)}
-                              className="text-primary"
-                              size={24}
-                            />
-                            <View className="flex-1">
-                              <Text className="font-semibold">
-                                {account.name}
-                              </Text>
-                              <Text
-                                className="text-muted-foreground"
-                                variant="small"
-                              >
-                                {account.type.charAt(0).toUpperCase() +
-                                  account.type.slice(1)}{" "}
-                                Account
-                              </Text>
-                            </View>
-                          </View>
-                          <View className="items-end gap-2">
-                            <View className="items-end">
-                              <Text className="font-bold text-lg">
-                                {formatCurrency(
-                                  account.balance,
-                                  account.currency
-                                )}
-                              </Text>
-                              <Text
-                                className="text-muted-foreground"
-                                variant="small"
-                              >
-                                {account.currency}
-                              </Text>
-                            </View>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button size="sm" variant="ghost">
-                                  <Icon as={MoreHorizontalIcon} size={16} />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                <DropdownMenuItem
-                                  onPress={() => {
-                                    router.push(
-                                      `/finance/edit-account?accountId=${account.id}`
-                                    );
-                                  }}
-                                >
-                                  <Icon as={EditIcon} size={16} />
-                                  <Text>Edit</Text>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  className="text-red-600 dark:text-red-400"
-                                  onPress={() => {
-                                    deleteAccount(account.id);
-                                  }}
-                                >
-                                  <Icon as={TrashIcon} size={16} />
-                                  <Text>Delete</Text>
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </View>
-                        </View>
-                      </CardContent>
-                    </Card>
-                  ))
-                ) : (
-                  <Card>
-                    <CardContent>
-                      <View className="items-center gap-4 py-8">
-                        <Icon
-                          as={WalletIcon}
-                          className="text-muted-foreground"
-                          size={48}
-                        />
-                        <View className="items-center gap-2">
-                          <Text className="font-semibold">No accounts yet</Text>
-                          <Text className="text-center" variant="muted">
-                            Add your first account to start tracking finances
-                          </Text>
-                        </View>
-                        <Button
-                          onPress={() => router.push("/finance/add-account")}
-                        >
-                          <Icon as={PlusIcon} size={16} />
-                          <Text>Add Account</Text>
-                        </Button>
-                      </View>
-                    </CardContent>
-                  </Card>
-                )}
-              </View>
-            </TabsContent>
-
-            <TabsContent className="flex-1" value="transactions">
-              <View className="gap-4">
-                <View className="flex-row items-center justify-between">
-                  <Text variant="h3">All Transactions</Text>
-                  <Button
-                    onPress={() => router.push("/finance/add-transaction")}
-                    size="sm"
-                  >
-                    <Icon as={PlusIcon} size={16} />
-                    <Text>Add</Text>
-                  </Button>
-                </View>
-
-                {transactions.length > 0 ? (
-                  <View className="gap-3">
-                    {transactions.map((transaction) => (
-                      <Card key={transaction.id}>
-                        <CardContent className="p-4">
-                          <View className="flex-row items-center justify-between">
-                            <View className="flex-1 flex-row items-center gap-3">
-                              <View
-                                className={`rounded-full p-2 ${
-                                  transaction.type === "income"
-                                    ? "bg-green-100 dark:bg-green-900/20"
-                                    : "bg-red-100 dark:bg-red-900/20"
-                                }`}
-                              >
-                                <Icon
-                                  as={
-                                    transaction.type === "income"
-                                      ? TrendingUpIcon
-                                      : TrendingUpIcon
-                                  }
-                                  className={
-                                    transaction.type === "income"
-                                      ? "text-green-600 dark:text-green-400"
-                                      : "text-red-600 dark:text-red-400"
-                                  }
-                                  size={16}
-                                />
-                              </View>
-                              <View className="flex-1">
-                                <Text className="font-medium">
-                                  {transaction.description}
-                                </Text>
-                                <Text
-                                  className="text-muted-foreground"
-                                  variant="small"
-                                >
-                                  {transaction.category} •{" "}
-                                  {new Date(
-                                    transaction.date
-                                  ).toLocaleDateString()}
-                                </Text>
-                              </View>
-                            </View>
-                            <View className="items-end gap-2">
-                              <Text
-                                className={`font-semibold ${
-                                  transaction.type === "income"
-                                    ? "text-green-600 dark:text-green-400"
-                                    : "text-red-600 dark:text-red-400"
-                                }`}
-                              >
-                                {transaction.type === "income" ? "+" : "-"}
-                                {formatCurrency(transaction.amount)}
-                              </Text>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button size="sm" variant="ghost">
-                                    <Icon as={MoreHorizontalIcon} size={16} />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                  <DropdownMenuItem
-                                    onPress={() => {
-                                      router.push(
-                                        `/finance/edit-transaction?transactionId=${transaction.id}`
-                                      );
-                                    }}
-                                  >
-                                    <Icon as={EditIcon} size={16} />
-                                    <Text>Edit</Text>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    className="text-red-600 dark:text-red-400"
-                                    onPress={() => {
-                                      deleteTransaction(transaction.id);
-                                    }}
-                                  >
-                                    <Icon as={TrashIcon} size={16} />
-                                    <Text>Delete</Text>
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </View>
-                          </View>
-                        </CardContent>
-                      </Card>
-                    ))}
+                    {/* Transaction Details */}
+                    <View className="flex-1">
+                      <Text className="text-white font-semibold text-base">
+                        {transaction.name}
+                      </Text>
+                      <Text className="text-white/70 text-sm">
+                        {transaction.time}
+                      </Text>
+                    </View>
                   </View>
-                ) : (
-                  <Card>
-                    <CardContent>
-                      <View className="items-center gap-4 py-8">
-                        <Icon
-                          as={BarChart3Icon}
-                          className="text-muted-foreground"
-                          size={48}
-                        />
-                        <View className="items-center gap-2">
-                          <Text className="font-semibold">
-                            No transactions yet
-                          </Text>
-                          <Text className="text-center" variant="muted">
-                            Start tracking your income and expenses
-                          </Text>
-                        </View>
-                        <Button
-                          onPress={() =>
-                            router.push("/finance/add-transaction")
-                          }
-                        >
-                          <Icon as={PlusIcon} size={16} />
-                          <Text>Add Transaction</Text>
-                        </Button>
-                      </View>
-                    </CardContent>
-                  </Card>
-                )}
-              </View>
-            </TabsContent>
 
-            <TabsContent className="flex-1" value="budgets">
-              <View className="gap-4">
-                <View className="flex-row items-center justify-between">
-                  <Text variant="h3">Budget Categories</Text>
-                  <Button
-                    onPress={() => router.push("/finance/add-budget")}
-                    size="sm"
-                  >
-                    <Icon as={PlusIcon} size={16} />
-                    <Text>Add</Text>
-                  </Button>
+                  {/* Amount */}
+                  <Text className="text-white font-bold text-lg">
+                    {formatCurrency(transaction.amount)}
+                  </Text>
                 </View>
+              ))}
+            </View>
+          </View>
 
-                {budgetCategories.length > 0 ? (
-                  <View className="gap-3">
-                    {budgetCategories.map((category) => {
-                      const percentage =
-                        (category.spent / category.budget) * 100;
-                      const isOverBudget = category.spent > category.budget;
-
-                      return (
-                        <Card key={category.id}>
-                          <CardContent className="p-4">
-                            <View className="gap-3">
-                              <View className="flex-row items-center justify-between">
-                                <Text className="flex-1 font-semibold">
-                                  {category.name}
-                                </Text>
-                                <View className="items-end gap-2">
-                                  <Text
-                                    className={`font-semibold ${isOverBudget ? "text-red-600 dark:text-red-400" : "text-green-600 dark:text-green-400"}`}
-                                  >
-                                    {formatCurrency(category.spent)} /{" "}
-                                    {formatCurrency(category.budget)}
-                                  </Text>
-                                  <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                      <Button size="sm" variant="ghost">
-                                        <Icon
-                                          as={MoreHorizontalIcon}
-                                          size={16}
-                                        />
-                                      </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent>
-                                      <DropdownMenuItem
-                                        onPress={() => {
-                                          router.push(
-                                            `/finance/edit-budget?budgetId=${category.id}`
-                                          );
-                                        }}
-                                      >
-                                        <Icon as={EditIcon} size={16} />
-                                        <Text>Edit</Text>
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                        className="text-red-600 dark:text-red-400"
-                                        onPress={() => {
-                                          deleteBudgetCategory(category.id);
-                                        }}
-                                      >
-                                        <Icon as={TrashIcon} size={16} />
-                                        <Text>Delete</Text>
-                                      </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                  </DropdownMenu>
-                                </View>
-                              </View>
-
-                              <View className="gap-2">
-                                <View className="flex-row items-center justify-between">
-                                  <Text
-                                    className="text-muted-foreground"
-                                    variant="small"
-                                  >
-                                    {percentage.toFixed(0)}% used
-                                  </Text>
-                                  <Text
-                                    className="text-muted-foreground"
-                                    variant="small"
-                                  >
-                                    {category.period}
-                                  </Text>
-                                </View>
-
-                                <View className="h-2 rounded-full bg-muted">
-                                  <View
-                                    className={`h-2 rounded-full ${
-                                      isOverBudget
-                                        ? "bg-red-500"
-                                        : percentage > 80
-                                          ? "bg-orange-500"
-                                          : "bg-green-500"
-                                    }`}
-                                    style={{
-                                      width: `${Math.min(percentage, 100)}%`,
-                                    }}
-                                  />
-                                </View>
-                              </View>
-                            </View>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </View>
-                ) : (
-                  <Card>
-                    <CardContent>
-                      <View className="items-center gap-4 py-8">
-                        <Icon
-                          as={BarChart3Icon}
-                          className="text-muted-foreground"
-                          size={48}
-                        />
-                        <View className="items-center gap-2">
-                          <Text className="font-semibold">No budgets set</Text>
-                          <Text className="text-center" variant="muted">
-                            Create budget categories to track your spending
-                          </Text>
-                        </View>
-                        <Button>
-                          <Icon as={PlusIcon} size={16} />
-                          <Text>Create Budget</Text>
-                        </Button>
-                      </View>
-                    </CardContent>
-                  </Card>
-                )}
-              </View>
-            </TabsContent>
-          </Tabs>
+          {/* Add Transaction Button */}
+          <View className="pb-8">
+            <Button
+              className="w-full bg-emerald-600 rounded-2xl py-4 shadow-2xl"
+              onPress={() => router.push("/finance/add-transaction")}
+            >
+              <Icon as={PlusIcon} className="text-white" size={20} />
+              <Text className="text-white font-bold ml-2 text-lg">Add Transaction</Text>
+            </Button>
+          </View>
         </View>
       </ScrollView>
-    </Container>
+    </View>
   );
 }
