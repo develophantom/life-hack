@@ -34,7 +34,7 @@ export function CardStack({
   }
 
   return (
-    <View className={`relative mb-8 ${className}`}>
+    <View className={`relative mb-8 items-center ${className}`}>
       {visibleCards.map((card, index) => {
         const isLast = index === visibleCards.length - 1;
         const offset = index * 6; // 6px offset for each card
@@ -47,7 +47,6 @@ export function CardStack({
             className="absolute"
             style={{
               top: offset,
-              left: offset,
               zIndex: zIndex,
             }}
           >
