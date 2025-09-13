@@ -26,6 +26,8 @@ import { Container } from "@/components/container";
 import { SpendingChart } from "@/components/dashboard/SpendingChart";
 import { SavingsGoals } from "@/components/dashboard/SavingsGoals";
 import { BudgetOverview } from "@/components/dashboard/BudgetOverview";
+import { SavingsGoalsRow } from "@/components/dashboard/SavingsGoalsRow";
+import { BudgetOverviewRow } from "@/components/dashboard/BudgetOverviewRow";
 import { TransactionList } from "@/components/dashboard/TransactionList";
 import { Progress } from "@/components/ui/progress";
 
@@ -374,7 +376,7 @@ export default function FinanceScreen() {
 
           {/* Savings Goals */}
           <View className="mb-8">
-            <SavingsGoals
+            <SavingsGoalsRow
               goals={savingsGoals}
               onAddGoal={() => router.push("/finance/add-budget")}
               onEditGoal={(goal) => router.push("/finance/edit-budget")}
@@ -383,7 +385,7 @@ export default function FinanceScreen() {
 
           {/* Budget Overview */}
           <View className="mb-8">
-            <BudgetOverview
+            <BudgetOverviewRow
               budgets={budgets}
               onAddBudget={() => router.push("/finance/add-budget")}
               onEditBudget={(budget) => router.push("/finance/edit-budget")}

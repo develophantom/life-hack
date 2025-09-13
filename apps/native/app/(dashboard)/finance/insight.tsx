@@ -171,7 +171,7 @@ export default function Insight() {
 								>
 									<TouchableOpacity
 										onPress={() => handleQuestionPress(item.question)}
-										className="bg-card rounded-2xl p-4 shadow-sm border border-border/50 active:scale-95 transition-transform"
+										className="bg-card rounded-2xl p-4 shadow-sm border border-border/50"
 										style={{
 											shadowColor: '#000',
 											shadowOffset: { width: 0, height: 2 },

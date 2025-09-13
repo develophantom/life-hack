@@ -64,6 +64,13 @@ export default function Screen() {
             </Button>
           </Link>
 
+          <Link href="/(dashboard)/finance/insight" asChild>
+            <Button>
+              <Text>Insight</Text>
+            </Button>
+          </Link>
+
+
           <Link href="https://github.com/founded-labs/react-native-reusables" asChild>
             <Button variant="ghost">
               <Text>Star the Repo</Text>
