@@ -613,6 +613,7 @@ export default function HabitsScreen() {
 
                 {/* Tools Grid */}
                 <View className="grid grid-cols-2 gap-4">
+
                   <Card onPress={() => router.push("/habits/reminders")}>
                     <CardContent className="p-4">
                       <View className="items-center gap-3">
