@@ -131,10 +131,7 @@ const mockEvents: Event[] = [
 const HOURS = [
 	'00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00',
 	'10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00',
-	'20:00', '21:00', '22:00', '23:00', '24:00', '25:00', '26:00', '27:00', '28:00', '29:00',
-	'30:00', '31:00', '32:00', '33:00', '34:00', '35:00', '36:00', '37:00', '38:00', '39:00',
-	'40:00', '41:00', '42:00', '43:00', '44:00', '45:00', '46:00', '47:00'
-];
+	'20:00', '21:00', '22:00', '23:00'] as const;
 
 export default function ScheduleScreen() {
 	const [selectedDate, setSelectedDate] = useState(new Date());
@@ -150,7 +147,8 @@ export default function ScheduleScreen() {
 		const currentMinute = now.getMinutes();
 
 		// Calculate position for current time (scrolling to show current hour)
-		const currentTimePosition = (currentHour * 60 + currentMinute) * 0.75;
+		// Each hour is 80px, so each minute is 80/60 = 1.33px
+		const currentTimePosition = (currentHour * 80) + (currentMinute * 1.33);
 		const scrollOffset = Math.max(0, currentTimePosition - 200); // Offset to show current time nicely
 
 		// Scroll to current time after a short delay to ensure layout is ready
@@ -194,8 +192,8 @@ export default function ScheduleScreen() {
 		}
 
 		return {
-			top: startPosition * 0.75 + verticalOffset, // Add vertical offset for overlaps
-			height: Math.max(duration * 0.75, 60), // Minimum height for readability
+			top: (startPosition * 80 / 60) + verticalOffset, // Convert minutes to pixels (80px per hour)
+			height: Math.max((duration * 80 / 60), 80), // Convert duration to pixels, minimum 80px
 		};
 	};
 
@@ -262,7 +260,7 @@ export default function ScheduleScreen() {
 						{/* Time Column */}
 						<View className="w-20 mr-6">
 							{HOURS.map((hour, index) => (
-								<View key={hour} className="h-16 items-center justify-center">
+								<View key={hour} className="h-20 items-center justify-center">
 									<Text className="text-gray-500 text-sm font-medium">
 										{hour}
 									</Text>
@@ -271,13 +269,13 @@ export default function ScheduleScreen() {
 						</View>
 
 						{/* Events Column */}
-						<View className="flex-1 relative" style={{ height: HOURS.length * 64 }}>
+						<View className="flex-1 relative" style={{ height: HOURS.length * 80 }}>
 							{/* Timeline Lines */}
 							{HOURS.map((hour, index) => (
 								<View
 									key={`line-${hour}`}
 									className="absolute left-0 right-0 h-px bg-gray-200"
-									style={{ top: index * 64 }}
+									style={{ top: index * 80 }}
 								/>
 							))}
 
@@ -286,14 +284,27 @@ export default function ScheduleScreen() {
 								const now = new Date();
 								const currentHour = now.getHours();
 								const currentMinute = now.getMinutes();
-								const currentTimePosition = (currentHour * 60 + currentMinute) * 0.75;
+								const currentTimePosition = (currentHour * 80) + (currentMinute * 1.33); // 80px per hour, 1.33px per minute
 
 								return (
 									<View
-										className="absolute left-0 right-0 h-0.5 bg-red-500 z-10"
-										style={{ top: currentTimePosition }}
+										className="absolute h-0.5 bg-red-500 z-10"
+										style={{
+											top: currentTimePosition,
+											left: -24, // Extend beyond the timeline container
+											right: -24, // Extend beyond the timeline container
+										}}
 									>
-										<View className="absolute -left-2 -top-1 w-4 h-4 bg-red-500 rounded-full" />
+										{/* Full-width red dot */}
+										<View
+											className="absolute bg-red-500 rounded-full"
+											style={{
+												left: -24,
+												right: -24,
+												top: -2,
+												height: 4,
+											}}
+										/>
 									</View>
 								);
 							})()}
@@ -309,7 +320,7 @@ export default function ScheduleScreen() {
 											}`}
 										style={{
 											top: position.top,
-											height: Math.max(position.height, 60),
+											height: Math.max(position.height, 80),
 											shadowColor: '#000',
 											shadowOffset: { width: 0, height: 2 },
 											shadowOpacity: pressedEvent === event.id ? 0.12 : 0.08,
