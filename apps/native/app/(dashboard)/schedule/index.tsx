@@ -259,7 +259,7 @@ export default function ScheduleScreen() {
         ref={scrollViewRef}
         className="flex-1 bg-gray-50"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ paddingBottom: 40 }}
       >
         <View className="px-6 py-6">
           {/* Timeline Container */}
@@ -427,26 +427,7 @@ export default function ScheduleScreen() {
             </View>
           </View>
 
-          {/* Add Event Button */}
-          <View className="mt-8 mb-4">
-            <TouchableOpacity
-              className={`w-full bg-blue-600 rounded-xl py-4 flex-row items-center justify-center ${pressedButton ? 'scale-98' : 'scale-100'
-                }`}
-              onPress={() => router.push('/schedule/add-event')}
-              onPressIn={() => setPressedButton(true)}
-              onPressOut={() => setPressedButton(false)}
-              style={{
-                shadowColor: '#3B82F6',
-                shadowOffset: { width: 0, height: pressedButton ? 2 : 4 },
-                shadowOpacity: pressedButton ? 0.25 : 0.2,
-                shadowRadius: pressedButton ? 6 : 8,
-                elevation: pressedButton ? 4 : 6,
-              }}
-            >
-              <Icon as={PlusIcon} className="text-white" size={18} />
-              <Text className="text-white font-semibold text-base ml-2">Add New Event</Text>
-            </TouchableOpacity>
-          </View>
+
         </View>
       </ScrollView>
     </Container>
