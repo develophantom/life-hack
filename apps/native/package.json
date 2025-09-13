@@ -23,6 +23,7 @@
       "@orpc/client": "^1.8.7",
       "@orpc/tanstack-query": "^1.8.7",
       "@paralleldrive/cuid2": "^2.2.2",
+      "@radix-ui/react-slot": "^1.2.3",
       "@react-native-community/netinfo": "11.4.1",
       "@react-navigation/bottom-tabs": "^7.3.10",
       "@react-navigation/drawer": "^7.3.9",

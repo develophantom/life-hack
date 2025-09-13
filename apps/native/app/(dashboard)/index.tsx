@@ -11,7 +11,6 @@ import {
 import React from "react";
 import { ScrollView, View } from "react-native";
 import { Container } from "@/components/container";
-import { MotivationalQuote } from "@/components/motivational-quote";
 import MotivationalQuoteDOM from "@/components/motivational-quote-dom";
 import { getRandomQuote } from "@/lib/motivational-quotes-dom";
 import { Button } from "@/components/ui/button";
