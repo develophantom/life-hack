@@ -378,7 +378,7 @@ export default function FinanceScreen() {
           <View className="mb-8">
             <SavingsGoalsRow
               goals={savingsGoals}
-              onAddGoal={() => router.push("/finance/add-budget")}
+              onAddGoal={() => router.push("/finance/add-saving")}
               onEditGoal={(goal) => router.push("/finance/edit-budget")}
             />
           </View>

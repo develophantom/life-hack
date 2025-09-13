@@ -34,7 +34,7 @@ export function SavingsGoalsRow({ goals, onAddGoal, onEditGoal }: SavingsGoalsRo
 		if (onAddGoal) {
 			onAddGoal();
 		} else {
-			router.push('/finance/add-budget');
+			router.push('/finance/add-saving');
 		}
 	};
 

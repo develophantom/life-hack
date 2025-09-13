@@ -12,6 +12,8 @@ import React from "react";
 import { ScrollView, View } from "react-native";
 import { Container } from "@/components/container";
 import { MotivationalQuote } from "@/components/motivational-quote";
+import MotivationalQuoteDOM from "@/components/motivational-quote-dom";
+import { getRandomQuote } from "@/lib/motivational-quotes-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
@@ -20,6 +22,7 @@ import { useDashboardStore } from "@/lib/dashboard-store";
 
 export default function DashboardScreen() {
   const { dashboardData, updateDashboardData, getTodayHabits } = useDashboardStore();
+  const [domQuote, setDomQuote] = React.useState(getRandomQuote());
 
   // Update dashboard data when component mounts
   React.useEffect(() => {
@@ -152,8 +155,13 @@ export default function DashboardScreen() {
             </CardContent>
           </Card>
 
-          {/* Motivational Quote */}
-          <MotivationalQuote />
+          {/* DOM Motivational Quote */}
+          <MotivationalQuoteDOM
+            quote={domQuote.quote}
+            author={domQuote.author}
+            onRefresh={() => setDomQuote(getRandomQuote())}
+            dom={{ matchContents: true }}
+          />
 
           {/* Quick Actions Section */}
           <View className="px-6 mb-6">
@@ -165,7 +173,7 @@ export default function DashboardScreen() {
                 <Icon as={TargetIcon} size={20} />
                 <Text className="ml-2">Add Habit</Text>
               </Button>
-              
+
               <Button
                 className="flex-1"
                 variant="outline"
@@ -188,7 +196,7 @@ export default function DashboardScreen() {
                       {completedHabits}/{totalHabits} completed
                     </Text>
                   </View>
-                  
+
                   <View className="space-y-2">
                     {todayHabits.slice(0, 3).map((habit) => (
                       <View key={habit.id} className="flex-row items-center gap-3">
@@ -204,7 +212,7 @@ export default function DashboardScreen() {
                       </View>
                     ))}
                   </View>
-                  
+
                   {totalHabits > 3 && (
                     <Button
                       variant="outline"
@@ -229,7 +237,7 @@ export default function DashboardScreen() {
                     Total: ${dashboardData.totalBalance.toFixed(2)}
                   </Text>
                 </View>
-                
+
                 <View className="flex-row gap-4">
                   <View className="flex-1">
                     <Text className="text-sm text-gray-500">This Week</Text>
@@ -244,7 +252,7 @@ export default function DashboardScreen() {
                     </Text>
                   </View>
                 </View>
-                
+
                 <Button
                   variant="outline"
                   className="mt-3"
