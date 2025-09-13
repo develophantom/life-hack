@@ -23,6 +23,11 @@ import { SlackIcon } from "@/components/slack-icon";
 import { Text } from "@/components/ui/text";
 import { useDashboardStore } from "@/lib/dashboard-store";
 import { Container } from "@/components/container";
+import { SpendingChart } from "@/components/dashboard/SpendingChart";
+import { SavingsGoals } from "@/components/dashboard/SavingsGoals";
+import { BudgetOverview } from "@/components/dashboard/BudgetOverview";
+import { TransactionList } from "@/components/dashboard/TransactionList";
+import { Progress } from "@/components/ui/progress";
 
 export default function FinanceScreen() {
   const { accounts, transactions, getRecentTransactions } = useDashboardStore();
@@ -72,63 +77,143 @@ export default function FinanceScreen() {
 
   const accountCards = generateCardsFromAccounts();
 
+  // Mock savings goals data
+  const savingsGoals = [
+    {
+      id: "1",
+      name: "Buy Macbook",
+      targetAmount: 100000,
+      currentAmount: 80000,
+      deadline: "2024-12-31",
+      category: "Macbook",
+      icon: "💻",
+    },
+    {
+      id: "2",
+      name: "Investment",
+      targetAmount: 0,
+      currentAmount: 200000,
+      deadline: "2024-06-15",
+      category: "Investment",
+      icon: "📈",
+    },
+    {
+      id: "3",
+      name: "New Home",
+      targetAmount: 0,
+      currentAmount: 400000,
+      deadline: "2024-08-30",
+      category: "House",
+      icon: "🏠",
+    },
+  ];
+
+  // Mock budget data
+  const budgets = [
+    {
+      id: "1",
+      name: "Food & Dining",
+      category: "Essential",
+      budgetAmount: 1500,
+      spentAmount: 1240,
+      period: "monthly" as const,
+      color: "bg-chart-1",
+      icon: "🍽️",
+    },
+    {
+      id: "2",
+      name: "Transportation",
+      category: "Essential",
+      budgetAmount: 800,
+      spentAmount: 680,
+      period: "monthly" as const,
+      color: "bg-chart-2",
+      icon: "🚗",
+    },
+    {
+      id: "3",
+      name: "Entertainment",
+      category: "Lifestyle",
+      budgetAmount: 400,
+      spentAmount: 340,
+      period: "monthly" as const,
+      color: "bg-chart-3",
+      icon: "🎬",
+    },
+    {
+      id: "4",
+      name: "Shopping",
+      category: "Lifestyle",
+      budgetAmount: 600,
+      spentAmount: 520,
+      period: "monthly" as const,
+      color: "bg-chart-4",
+      icon: "🛍️",
+    },
+  ];
+
   // Mock transaction data with icons and colors using design system
   const mockTransactions = [
     {
       id: "1",
-      name: "Figma",
-      amount: 375.00,
-      time: "2:31 PM",
-      icon: "F",
-      color: "bg-chart-4",
+      name: "Spotify Subscription",
+      description: "Transfer to bank",
+      amount: -77.00,
+      date: "30 December",
+      icon: "🎵",
+      color: "bg-chart-1",
     },
     {
       id: "2",
-      name: "Crunchbase",
-      amount: 49.00,
-      time: "Yesterday, 10:55 AM",
-      icon: "cb",
+      name: "Paypal Transaction",
+      description: "Transfer to bank",
+      amount: 140.00,
+      date: "29 December",
+      icon: "P",
       color: "bg-chart-2",
     },
     {
       id: "3",
-      name: "Jason Green",
-      amount: 1240.21,
-      time: "Jun 20, 4:42 PM",
-      icon: "JG",
-      color: "bg-chart-1",
-    },
-    {
-      id: "4",
-      name: "Framer",
-      amount: 23.00,
-      time: "Jun 20, 2:15 PM",
-      icon: "F",
-      color: "bg-primary",
-    },
-    {
-      id: "5",
-      name: "Zoom",
-      amount: 289.90,
-      time: "Jun 19, 11:30 AM",
-      icon: "Z",
+      name: "Stripe Transaction",
+      description: "Transfer to bank",
+      amount: 2320.00,
+      date: "29 December",
+      icon: "S",
       color: "bg-chart-2",
     },
     {
-      id: "6",
-      name: "Slack",
-      amount: 11.75,
-      time: "Jun 19, 9:15 AM",
-      icon: "S",
+      id: "4",
+      name: "Dribbble Pro Subscription",
+      description: "Transfer to bank",
+      amount: -324.00,
+      date: "28 December",
+      icon: "D",
+      color: "bg-chart-3",
+    },
+    {
+      id: "5",
+      name: "Figma Subscription",
+      description: "Transfer to bank",
+      amount: -375.00,
+      date: "27 December",
+      icon: "F",
       color: "bg-chart-4",
+    },
+    {
+      id: "6",
+      name: "Zoom Meeting",
+      description: "Transfer to bank",
+      amount: -289.90,
+      date: "26 December",
+      icon: "Z",
+      color: "bg-chart-5",
     },
   ];
 
   return (
     <Container>
       {/* Header Section */}
-      <View className="px-6 pb-6">
-
+      <View className="px-4">
         {/* Balance Section */}
         <View className="mb-8">
           <View className="flex-row items-center justify-between mb-4">
@@ -171,60 +256,67 @@ export default function FinanceScreen() {
           <CardStack cards={accountCards} maxVisible={3} />
 
           {/* Quick Actions */}
-          <View className="mb-8">
+          <View className="mb-4">
             <Text className="text-foreground text-lg font-semibold mb-4">Quick Actions</Text>
-            <View className="flex-row gap-3">
+            <View className=" flex-row flex-wrap flex-grow gap-4">
               <Button
-                variant="outline"
-                className="flex-1 py-4"
+                variant="secondary"
                 onPress={() => router.push("/finance/add-transaction")}
               >
-                <Icon as={SendIcon} className="text-primary" size={20} />
-                <Text className="text-primary font-semibold ml-2">Send Money</Text>
+                <Icon as={SendIcon} className="text-secondary-foreground" size={20} />
+                <Text className="text-secondary-foreground font-semibold ml-2">Send Money</Text>
               </Button>
               <Button
-                variant="outline"
-                className="flex-1 py-4"
+                variant="secondary"
                 onPress={() => router.push("/finance/add-account")}
               >
-                <Icon as={CreditCardIcon} className="text-primary" size={20} />
-                <Text className="text-primary font-semibold ml-2">Add Account</Text>
+                <Icon as={CreditCardIcon} className="text-secondary-foreground" size={20} />
+                <Text className="text-secondary-foreground font-semibold ml-2">Add Account</Text>
               </Button>
               <Button
-                variant="outline"
-                className="flex-1 py-4"
+                variant="secondary"
                 onPress={() => router.push("/finance/add-budget")}
               >
-                <Icon as={TargetIcon} className="text-primary" size={20} />
-                <Text className="text-primary font-semibold ml-2">Set Budget</Text>
+                <Icon as={TargetIcon} className="text-secondary-foreground" size={20} />
+                <Text className="text-secondary-foreground font-semibold ml-2">Set Budget</Text>
               </Button>
+              <Button
+                variant="secondary"
+                onPress={() => router.push("/finance/add-budget")}
+              >
+                <Icon as={TargetIcon} className="text-secondary-foreground" size={20} />
+                <Text className="text-secondary-foreground font-semibold ml-2">Set Budget</Text>
+              </Button>
+
             </View>
           </View>
 
           {/* Financial Summary */}
-          <View className="mb-8">
-            <View className="bg-card rounded-3xl p-6 shadow-2xl">
-              <View className="flex-row items-center justify-between mb-4">
+          <View className="mt-6">
+            <View className="p-4 rounded-3xl shadow-2xl">
+              <View className="flex-col justify-between mb-4">
                 <Text className="text-card-foreground text-lg font-semibold">Monthly Spending</Text>
-                <Text className="text-muted-foreground text-sm">
-                  {formatCurrency(monthlySpent)} of {formatCurrency(monthlyLimit)}
-                </Text>
+                <View className="flex-col">
+                  <View className="flex-row items-center gap-2">
+                    <Icon as={TrendingUpIcon} className="text-chart-1" size={16} />
+                    <Text className="text-sm font-semibold">
+                      +528.32 (12.3%)
+                    </Text>
+                  </View>
+                  <View className="flex-row items-center gap-2 font-bold">
+                    <Text className="text-sm">
+                      {formatCurrency(monthlySpent)} of {formatCurrency(monthlyLimit)}
+                    </Text>
+                  </View>
+                </View>
               </View>
 
               {/* Progress Bar */}
               <View className="mb-4">
-                <View className="h-3 bg-muted rounded-full overflow-hidden">
-                  <View
-                    className="h-full bg-chart-1 rounded-full"
-                    style={{ width: `${Math.min(spentPercentage, 100)}%` }}
-                  />
-                </View>
-                <View className="flex-row justify-between mt-2">
-                  <Text className="text-muted-foreground text-xs">Spent</Text>
-                  <Text className="text-muted-foreground text-xs">
-                    {Math.round(spentPercentage)}%
-                  </Text>
-                </View>
+                <Progress
+                  value={spentPercentage}
+                  className="h-3 bg-chart-1 rounded-full"
+                />
               </View>
 
               <View className="flex-row gap-4">
@@ -279,56 +371,31 @@ export default function FinanceScreen() {
             </View>
           </View>
 
+
+          {/* Savings Goals */}
+          <View className="mb-8">
+            <SavingsGoals
+              goals={savingsGoals}
+              onAddGoal={() => router.push("/finance/add-budget")}
+              onEditGoal={(goal) => router.push("/finance/edit-budget")}
+            />
+          </View>
+
+          {/* Budget Overview */}
+          <View className="mb-8">
+            <BudgetOverview
+              budgets={budgets}
+              onAddBudget={() => router.push("/finance/add-budget")}
+              onEditBudget={(budget) => router.push("/finance/edit-budget")}
+            />
+          </View>
+
           {/* Transactions Section */}
           <View className="mb-8">
-            <View className="flex-row items-center justify-between mb-4">
-              <Text className="text-foreground text-xl font-bold">Recent Transactions</Text>
-              <View className="flex-row gap-2">
-                <Button variant="ghost" size="sm">
-                  <Icon as={FilterIcon} className="text-muted-foreground" size={16} />
-                </Button>
-                <Button variant="ghost" size="sm">
-                  <Icon as={DownloadIcon} className="text-muted-foreground" size={16} />
-                </Button>
-                <Button variant="ghost" size="sm">
-                  <Text className="text-muted-foreground text-sm">View All</Text>
-                </Button>
-              </View>
-            </View>
-
-            <View className="space-y-3">
-              {mockTransactions.map((transaction) => (
-                <View key={transaction.id} className="flex-row items-center justify-between py-4 px-4 bg-card rounded-2xl shadow-xl">
-                  <View className="flex-row items-center gap-4">
-                    {/* Transaction Icon */}
-                    {transaction.name === "Slack" ? (
-                      <SlackIcon />
-                    ) : (
-                      <View className={`w-12 h-12 rounded-2xl ${transaction.color} items-center justify-center`}>
-                        <Text className="text-card-foreground font-bold text-lg">
-                          {transaction.icon}
-                        </Text>
-                      </View>
-                    )}
-
-                    {/* Transaction Details */}
-                    <View className="flex-1">
-                      <Text className="text-card-foreground font-semibold text-base">
-                        {transaction.name}
-                      </Text>
-                      <Text className="text-muted-foreground text-sm">
-                        {transaction.time}
-                      </Text>
-                    </View>
-                  </View>
-
-                  {/* Amount */}
-                  <Text className="text-card-foreground font-bold text-lg">
-                    {formatCurrency(transaction.amount)}
-                  </Text>
-                </View>
-              ))}
-            </View>
+            <TransactionList
+              transactions={mockTransactions}
+              onViewAll={() => router.push("/finance/add-transaction")}
+            />
           </View>
 
           {/* Financial Insights */}
@@ -385,6 +452,6 @@ export default function FinanceScreen() {
           </View>
         </View>
       </ScrollView>
-    </Container>
+    </Container >
   );
 }

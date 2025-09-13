@@ -23,7 +23,7 @@ export function CardStack({
   // If no cards, show a placeholder
   if (visibleCards.length === 0) {
     return (
-      <View className={`relative mb-8 ${className}`}>
+      <View className={`relative mb-4 ${className}`}>
         <View className="w-96 h-60 bg-slate-700 rounded-3xl items-center justify-center shadow-2xl">
           <Text className="text-white/70 text-lg font-medium">
             No cards available
@@ -34,7 +34,7 @@ export function CardStack({
   }
 
   return (
-    <View className={`relative mb-8 items-center ${className}`}>
+    <View className={`relative mb-10 items-center ${className}`} style={{ height: 240 + (visibleCards.length - 1) * 6 }}>
       {visibleCards.map((card, index) => {
         const isLast = index === visibleCards.length - 1;
         const offset = index * 6; // 6px offset for each card

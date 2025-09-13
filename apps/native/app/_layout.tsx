@@ -9,6 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import { useFonts, Lato_400Regular, Lato_700Bold, Lato_900Black } from '@expo-google-fonts/lato';
 import * as SplashScreen from 'expo-splash-screen';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 export {
    // Catch any errors thrown by the Layout component.
@@ -38,15 +39,17 @@ export default function RootLayout() {
 
    return (
       <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
-         <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-         <Stack>
-            <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
-            <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
-            <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-         </Stack>
-         <PortalHost />
+         <KeyboardProvider>
+            <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+            <Stack>
+               <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+               <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+               <Stack.Screen name="index" options={{ headerShown: false }} />
+               <Stack.Screen name="(auth)" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
+               <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+            </Stack>
+            <PortalHost />
+         </KeyboardProvider>
       </ThemeProvider>
    );
 }
