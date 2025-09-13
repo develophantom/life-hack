@@ -1,7 +1,8 @@
-import { TextClassContext } from '@/components/ui/text';
+import { TextClassContext, Text } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import * as TabsPrimitive from '@rn-primitives/tabs';
 import { Platform } from 'react-native';
+import React from 'react';
 
 function Tabs({
   className,
@@ -28,9 +29,29 @@ function TabsList({
 
 function TabsTrigger({
   className,
+  children,
   ...props
-}: TabsPrimitive.TriggerProps & React.RefAttributes<TabsPrimitive.TriggerRef>) {
+}: TabsPrimitive.TriggerProps & React.RefAttributes<TabsPrimitive.TriggerRef> & {
+  children?: React.ReactNode;
+}) {
   const { value } = TabsPrimitive.useRootContext();
+
+  // Helper function to wrap text children in Text components
+  const wrapChildren = (children: React.ReactNode): React.ReactNode => {
+    if (typeof children === 'string') {
+      return <Text>{children}</Text>;
+    }
+    if (Array.isArray(children)) {
+      return React.Children.map(children, (child) => {
+        if (typeof child === 'string') {
+          return <Text>{child}</Text>;
+        }
+        return child;
+      });
+    }
+    return children;
+  };
+
   return (
     <TextClassContext.Provider
       value={cn(
@@ -48,7 +69,9 @@ function TabsTrigger({
           className
         )}
         {...props}
-      />
+      >
+        {wrapChildren(children)}
+      </TabsPrimitive.Trigger>
     </TextClassContext.Provider>
   );
 }

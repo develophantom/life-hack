@@ -66,8 +66,8 @@ export default function HabitsScreen() {
           {/* Header */}
           <View className="flex-row items-center justify-between">
             <View>
-              <Text variant="h1">Habits</Text>
-              <Text variant="muted">
+              <Text style={{ fontFamily: "Lato_900Black" }} >Habits</Text>
+              <Text variant="muted" style={{ fontFamily: "Lato_400Regular" }}>
                 Build better habits, track your progress
               </Text>
             </View>
@@ -83,19 +83,20 @@ export default function HabitsScreen() {
             onValueChange={setActiveTab}
             value={activeTab}
           >
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="today">Today</TabsTrigger>
               <TabsTrigger value="streaks">Streaks</TabsTrigger>
               <TabsTrigger value="goals">Goals</TabsTrigger>
-            </TabsList>
-            
-            {/* Advanced Features Tabs */}
-            <TabsList className="grid w-full grid-cols-4 mt-2">
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            </TabsList>
+
+
+            <TabsList>
               <TabsTrigger value="templates">Templates</TabsTrigger>
               <TabsTrigger value="challenges">Challenges</TabsTrigger>
               <TabsTrigger value="tools">Tools</TabsTrigger>
+
             </TabsList>
 
             <TabsContent className="flex-1" value="overview">
@@ -175,11 +176,10 @@ export default function HabitsScreen() {
                             </View>
                             <View className="items-end">
                               <Text
-                                className={`font-semibold ${
-                                  habit.completedToday
-                                    ? "text-green-600 dark:text-green-400"
-                                    : "text-muted-foreground"
-                                }`}
+                                className={`font-semibold ${habit.completedToday
+                                  ? "text-green-600 dark:text-green-400"
+                                  : "text-muted-foreground"
+                                  }`}
                               >
                                 {habit.completedToday ? "✓" : "○"}
                               </Text>
@@ -431,11 +431,10 @@ export default function HabitsScreen() {
                                   {habit.name}
                                 </Text>
                                 <Text
-                                  className={`font-semibold ${
-                                    isCompleted
-                                      ? "text-green-600 dark:text-green-400"
-                                      : "text-blue-600 dark:text-blue-400"
-                                  }`}
+                                  className={`font-semibold ${isCompleted
+                                    ? "text-green-600 dark:text-green-400"
+                                    : "text-blue-600 dark:text-blue-400"
+                                    }`}
                                 >
                                   {habit.currentStreak} / {habit.targetStreak}
                                 </Text>
@@ -459,13 +458,12 @@ export default function HabitsScreen() {
 
                                 <View className="h-2 rounded-full bg-muted">
                                   <View
-                                    className={`h-2 rounded-full ${
-                                      isCompleted
-                                        ? "bg-green-500"
-                                        : progress > 80
-                                          ? "bg-orange-500"
-                                          : "bg-blue-500"
-                                    }`}
+                                    className={`h-2 rounded-full ${isCompleted
+                                      ? "bg-green-500"
+                                      : progress > 80
+                                        ? "bg-orange-500"
+                                        : "bg-blue-500"
+                                      }`}
                                     style={{
                                       width: `${Math.min(progress, 100)}%`,
                                     }}
@@ -518,7 +516,7 @@ export default function HabitsScreen() {
                     <Text>View All</Text>
                   </Button>
                 </View>
-                
+
                 {habits.length > 0 ? (
                   <View className="gap-3">
                     {habits.slice(0, 2).map((habit) => (

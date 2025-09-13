@@ -4,7 +4,7 @@ import {
   FileTextIcon,
 } from "lucide-react-native";
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";

@@ -11,6 +11,9 @@ import { useFonts, Lato_400Regular, Lato_700Bold, Lato_900Black } from '@expo-go
 import * as SplashScreen from 'expo-splash-screen';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 
+// Prevent the splash screen from auto-hiding before fonts are loaded
+SplashScreen.preventAutoHideAsync();
+
 export {
    // Catch any errors thrown by the Layout component.
    ErrorBoundary,
