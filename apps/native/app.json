@@ -14,16 +14,7 @@
          "expo-secure-store",
          "expo-web-browser",
          "expo-build-properties",
-         [
-            "expo-font",
-            {
-               "fonts": [
-                  "node_modules/@expo-google-fonts/lato/900Black/Lato_900Black.ttf",
-                  "node_modules/@expo-google-fonts/lato/700Bold/Lato_700Bold.ttf",
-                  "node_modules/@expo-google-fonts/lato/400Regular/Lato_400Regular.ttf"
-               ]
-            }
-         ]
+            "expo-font"
       ],
       "experiments": {
          "typedRoutes": true,
