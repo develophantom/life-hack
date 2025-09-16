@@ -16,12 +16,14 @@ import { Text } from "@/components/ui/text";
 import { BottomSheet, BottomSheetRef } from "@/components/bottom-sheet";
 import { SavingsOverViewCard } from "@/components/dashboard/SavingOverViewCard";
 import { HabitHeatMap } from "@/components/dashboard/HabitHeatMap";
+import { Fab } from "@/components/ui/fab";
+import { Modal } from "@/components/ui/modal";
 import { useDashboardStore } from "@/lib/dashboard-store";
 import { fontStyles } from "@/lib/fonts";
 
 export default function DashboardScreen() {
    const { dashboardData, updateDashboardData, getTodayHabits } = useDashboardStore();
-   const bottomSheetRef = useRef<BottomSheetRef>(null);
+   const [showModal, setShowModal] = React.useState(false);
 
 
    // Update dashboard data when component mounts
@@ -211,52 +213,69 @@ export default function DashboardScreen() {
             />
          </ScrollView>
 
-         {/* Bottom Sheet for Calendar and Events */}
-         {/* <BottomSheet ref={bottomSheetRef} initialHeight={0.1} expandedHeight={0.9}>
-            <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
-         <View className="flex-row items-center justify-between mb-4">
-            <Text className="text-lg font-semibold">Today's Schedule</Text>
-            <Button
-               variant="outline"
-               size="sm"
-               onPress={() => bottomSheetRef.current?.toggle()}
-            >
-               <Text>View All</Text>
-            </Button>
-         </View>
-
-         <View className="flex-row justify-between mb-4">
-            {weekDates.map((date, index) => {
-               const isToday = date.toDateString() === today.toDateString();
-               const dayNumber = date.getDate();
-               const dayName = dayNames[index];
-
-               return (
-                  <View key={`${date.getFullYear()}-${date.getMonth()}-${dayNumber}`} className={`items-center p-2 rounded-lg ${isToday ? 'bg-gray-100' : ''}`}>
-                     <Text className={`text-lg font-bold ${isToday ? 'text-black' : 'text-gray-400'}`}>
-                        {dayNumber}
-                     </Text>
-                     <Text className={`text-xs ${isToday ? 'text-red-500' : 'text-gray-400'}`}>
-                        {dayName}
-                     </Text>
-                  </View>
-               );
-            })}
-         </View>
-
-         <View className="space-y-3 pb-6">
-            {dashboardData.todayEvents.map((event) => (
-               <View key={event.id} className="flex-row items-center gap-3">
-                  <View className={`w-2 h-2 rounded-full ${getEventColor(event.color)}`} />
-                  <Text className="flex-1 font-medium">{event.title}</Text>
-                  {event.time && (
-                     <Text className="text-gray-500 text-sm">{event.time}</Text>
-                  )}
+         {/* Modal for Calendar and Events */}
+         <Modal
+            visible={showModal}
+            onClose={() => setShowModal(false)}
+            title="Today's Schedule"
+            description=""
+            actionText="Done"
+            onAction={() => setShowModal(false)}
+         >
+            <View className="px-2">
+               <View className="flex-row items-center justify-between mb-4">
+                  <Text className="text-lg font-semibold text-black">Today's Schedule</Text>
+                  <Button
+                     variant="outline"
+                     size="sm"
+                     onPress={() => setShowModal(false)}
+                     className="bg-gray-100 border-gray-200"
+                  >
+                     <Text className="text-black text-sm">View All</Text>
+                  </Button>
                </View>
-            ))}
-         </View>
-      </ScrollView>
-         </BottomSheet >*/}
+
+               <View className="flex-row justify-between mb-4">
+                  {weekDates.map((date, index) => {
+                     const isToday = date.toDateString() === today.toDateString();
+                     const dayNumber = date.getDate();
+                     const dayName = dayNames[index];
+
+                     return (
+                        <View key={`${date.getFullYear()}-${date.getMonth()}-${dayNumber}`} className={`items-center p-2 rounded-lg ${isToday ? 'bg-gray-100 border border-gray-300' : ''}`}>
+                           <Text className={`text-lg font-bold ${isToday ? 'text-black' : 'text-gray-400'}`}>
+                              {dayNumber}
+                           </Text>
+                           <Text className={`text-xs ${isToday ? 'text-red-500' : 'text-gray-400'}`}>
+                              {dayName}
+                           </Text>
+                        </View>
+                     );
+                  })}
+               </View>
+
+               <View className="space-y-3 pb-4">
+                  {dashboardData.todayEvents.map((event) => (
+                     <View key={event.id} className="flex-row items-center gap-3">
+                        <View className={`w-2 h-2 rounded-full ${getEventColor(event.color)}`} />
+                        <Text className="flex-1 font-medium text-black">{event.title}</Text>
+                        {event.time && (
+                           <Text className="text-gray-500 text-sm">{event.time}</Text>
+                        )}
+                     </View>
+                  ))}
+               </View>
+            </View>
+         </Modal>
+
+         {/* Floating Action Button */}
+         <Fab
+            onPress={() => setShowModal(true)}
+            icon={TargetIcon}
+            variant="primary"
+            size="lg"
+            position="bottom-right"
+         />
       </View >
    );
 }
