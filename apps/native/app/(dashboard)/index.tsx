@@ -6,9 +6,11 @@ import {
    ActivityIcon,
    MoonIcon,
    WalletIcon,
+   TrendingUpIcon,
+   TrendingDownIcon,
 } from "lucide-react-native";
 import React, { useRef } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, TouchableOpacity } from "react-native";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
@@ -22,8 +24,9 @@ import { useDashboardStore } from "@/lib/dashboard-store";
 import { fontStyles } from "@/lib/fonts";
 
 export default function DashboardScreen() {
-   const { dashboardData, updateDashboardData, getTodayHabits } = useDashboardStore();
+   const { dashboardData, updateDashboardData, getTodayHabits, getTotalBalance, getRecentTransactions, budgetCategories } = useDashboardStore();
    const [showModal, setShowModal] = React.useState(false);
+   const [showFinancialData, setShowFinancialData] = React.useState(true);
 
 
    // Update dashboard data when component mounts
@@ -83,11 +86,11 @@ export default function DashboardScreen() {
             <View className="flex-row items-center justify-between mb-6">
                <View className="flex-row items-baseline gap-2">
                   <Text style={fontStyles.black} className="text-background text-4xl">{dayOfWeek}</Text>
-                  <View className="w-5 h-5 bg-red-500 rounded-full mt-1" />
+                  <View className="w-5 h-5 bg-destructive rounded-full mt-1" />
                </View>
                <View className="items-end" >
-                  <Text style={fontStyles.black} className="text-white text-lg">{monthDay}</Text>
-                  <Text style={fontStyles.black} className="text-white text-sm opacity-70">{year}</Text>
+                  <Text style={fontStyles.black} className="text-background text-lg">{monthDay}</Text>
+                  <Text style={fontStyles.black} className="text-background text-sm opacity-70">{year}</Text>
                </View>
             </View>
 
@@ -98,35 +101,94 @@ export default function DashboardScreen() {
 
             {/* Daily Summary */}
             <View className="mb-6">
-               <Text className="text-white text-2xl mb-2" style={fontStyles.bold} >
-                  You have{" "}
-                  <Icon as={CalendarIcon} className="text-white inline" size={16} />
-                  {" "}{dashboardData.totalMeetings} meetings,{" "}
-                  <Icon as={CheckCircleIcon} className="text-white inline" size={16} />
-                  {" "}{dashboardData.totalTasks} tasks and{" "}
-                  <Icon as={TargetIcon} className="text-white inline" size={16} />
-                  {" "}{totalHabits} habit{totalHabits !== 1 ? 's' : ''} today.
-               </Text>
+               <View className="flex-row flex-wrap items-center mb-2">
+                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                     Today you have{" "}
+                  </Text>
+                  <View className="flex-row items-center mx-1">
+                     <Icon as={CalendarIcon} className="text-background" size={16} />
+                     <Text className="text-background text-2xl ml-1" style={fontStyles.bold}>
+                        {dashboardData.totalMeetings}
+                     </Text>
+                  </View>
+                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                     {" "}meetings,{" "}
+                  </Text>
+                  <View className="flex-row items-center mx-1">
+                     <Icon as={CheckCircleIcon} className="text-background" size={16} />
+                     <Text className="text-background text-2xl ml-1" style={fontStyles.bold}>
+                        {dashboardData.totalTasks}
+                     </Text>
+                  </View>
+                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                     {" "}tasks,{" "}
+                  </Text>
+                  <View className="flex-row items-center mx-1">
+                     <Icon as={TargetIcon} className="text-background" size={16} />
+                     <Text className="text-background text-2xl ml-1" style={fontStyles.bold}>
+                        {totalHabits}
+                     </Text>
+                  </View>
+                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                     {" "}habit{totalHabits !== 1 ? 's' : ''}
+                  </Text>
+                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                     {" "}and{" "}
+                  </Text>
+                  <View className="flex-row items-center mx-1">
+                     <Icon as={WalletIcon} className="text-background" size={16} />
+                     <TouchableOpacity 
+                        onPress={() => setShowFinancialData(!showFinancialData)}
+                        className="ml-1"
+                     >
+                        <Text className="text-background text-2xl underline" style={fontStyles.bold}>
+                           {showFinancialData ? `$${getTotalBalance().toFixed(2)}` : '$••••••'}
+                        </Text>
+                     </TouchableOpacity>
+                  </View>
+                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                     {" "}available.
+                  </Text>
+               </View>
                <Text className="text-muted-foreground text-lg opacity-80" style={fontStyles.regular} >
                   {dashboardData.availabilityStatus}
                </Text>
             </View>
 
+
             {/* Activity Metrics */}
-            <View className="flex-row gap-6">
+            <View className="flex-row gap-6 mb-4">
                <View className="flex-row items-center gap-2">
-                  <Icon as={ActivityIcon} className="text-white" size={20} />
-                  <Text className="text-white font-semibold">
+                  <Icon as={ActivityIcon} className="text-background" size={20} />
+                  <Text className="text-background" style={fontStyles.bold}>
                      {Math.floor(dashboardData.dailyMetrics.steps / 1000)}.{(dashboardData.dailyMetrics.steps % 1000) / 100}K steps
                   </Text>
                </View>
                <View className="flex-row items-center gap-2">
-                  <Icon as={MoonIcon} className="text-white" size={20} />
-                  <Text className="text-white font-semibold">
+                  <Icon as={MoonIcon} className="text-orange-500" size={20} />
+                  <Text className="text-background font-semibold">
                      {dashboardData.dailyMetrics.sleepHours} hours
                   </Text>
                </View>
             </View>
+
+            {/* Financial Metrics */}
+            {showFinancialData && (
+               <View className="flex-row gap-6">
+                  <View className="flex-row items-center gap-2">
+                     <Icon as={TrendingUpIcon} className="text-green-500" size={20} />
+                     <Text className="text-background" style={fontStyles.bold}>
+                        {budgetCategories.filter(cat => cat.spent <= cat.budget).length}/{budgetCategories.length} budgets on track
+                     </Text>
+                  </View>
+                  <View className="flex-row items-center gap-2">
+                     <Icon as={WalletIcon} className="text-blue-500" size={20} />
+                     <Text className="text-background" style={fontStyles.bold}>
+                        {getRecentTransactions(5).filter(tx => tx.type === 'income').length} recent transactions
+                     </Text>
+                  </View>
+               </View>
+            )}
          </View>
 
          {/* Scrollable Content */}
@@ -218,20 +280,19 @@ export default function DashboardScreen() {
             visible={showModal}
             onClose={() => setShowModal(false)}
             title="Today's Schedule"
-            description=""
+            description="Your weekly schedule reflects your habits and events."
             actionText="Done"
             onAction={() => setShowModal(false)}
          >
-            <View className="px-2">
-               <View className="flex-row items-center justify-between mb-4">
-                  <Text className="text-lg font-semibold text-black">Today's Schedule</Text>
+            <View>
+               <View className="flex-row items-center justify-end mb-4">
                   <Button
                      variant="outline"
                      size="sm"
                      onPress={() => setShowModal(false)}
-                     className="bg-gray-100 border-gray-200"
+                     className="bg-muted border-border"
                   >
-                     <Text className="text-black text-sm">View All</Text>
+                     <Text className="text-sm">View All</Text>
                   </Button>
                </View>
 
@@ -242,11 +303,11 @@ export default function DashboardScreen() {
                      const dayName = dayNames[index];
 
                      return (
-                        <View key={`${date.getFullYear()}-${date.getMonth()}-${dayNumber}`} className={`items-center p-2 rounded-lg ${isToday ? 'bg-gray-100 border border-gray-300' : ''}`}>
-                           <Text className={`text-lg font-bold ${isToday ? 'text-black' : 'text-gray-400'}`}>
+                        <View key={`${date.getFullYear()}-${date.getMonth()}-${dayNumber}`} className={`items-center p-2 rounded-lg ${isToday ? 'bg-muted border border-border' : ''}`}>
+                           <Text className={`text-lg font-bold ${isToday ? 'text-foreground' : 'text-muted-foreground'}`}>
                               {dayNumber}
                            </Text>
-                           <Text className={`text-xs ${isToday ? 'text-red-500' : 'text-gray-400'}`}>
+                           <Text className={`text-xs ${isToday ? 'text-destructive' : 'text-muted-foreground'}`}>
                               {dayName}
                            </Text>
                         </View>
@@ -258,9 +319,9 @@ export default function DashboardScreen() {
                   {dashboardData.todayEvents.map((event) => (
                      <View key={event.id} className="flex-row items-center gap-3">
                         <View className={`w-2 h-2 rounded-full ${getEventColor(event.color)}`} />
-                        <Text className="flex-1 font-medium text-black">{event.title}</Text>
+                        <Text style={fontStyles.bold} className="flex-1 font-medium text-muted-foreground">{event.title}</Text>
                         {event.time && (
-                           <Text className="text-gray-500 text-sm">{event.time}</Text>
+                           <Text style={fontStyles.regular} className="text-muted-foreground text-sm">{event.time}</Text>
                         )}
                      </View>
                   ))}
@@ -273,7 +334,7 @@ export default function DashboardScreen() {
             onPress={() => setShowModal(true)}
             icon={TargetIcon}
             variant="primary"
-            size="lg"
+            size="sm"
             position="bottom-right"
          />
       </View >

@@ -3,12 +3,15 @@
    "main": "expo-router/entry",
    "version": "1.0.0",
    "scripts": {
-      "dev": "expo start -c",
-      "android": "expo start -c --android",
-      "ios": "expo start -c --ios",
-      "web": "expo start -c --web",
+      "dev": "NODE_ENV=development expo start -c",
+      "android": "NODE_ENV=development expo start -c --android",
+      "ios": "NODE_ENV=development expo start -c --ios",
+      "web": "NODE_ENV=development expo start -c --web",
       "clean": "rm -rf .expo node_modules",
-      "prebuild": "expo prebuild"
+      "prebuild": "expo prebuild",
+      "build:dev": "NODE_ENV=development eas build --profile development",
+      "build:preview": "NODE_ENV=production eas build --profile preview --local",
+      "build:prod": "NODE_ENV=production eas build --profile production"
    },
    "dependencies": {
       "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
