@@ -14,7 +14,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 import { BottomSheet, BottomSheetRef } from "@/components/bottom-sheet";
-import { ProgressCard } from "@/components/dashboard/ProgressCard";
+import { SavingsOverViewCard } from "@/components/dashboard/SavingOverViewCard";
+import { HabitHeatMap } from "@/components/dashboard/HabitHeatMap";
 import { useDashboardStore } from "@/lib/dashboard-store";
 import { fontStyles } from "@/lib/fonts";
 
@@ -27,7 +28,6 @@ export default function DashboardScreen() {
    React.useEffect(() => {
       updateDashboardData();
    }, [updateDashboardData]);
-
    const today = new Date();
    const dayOfWeek = today.toLocaleDateString('en-US', { weekday: 'short' });
    const monthDay = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
@@ -194,14 +194,17 @@ export default function DashboardScreen() {
                </View>
             )}
 
+            {/* Habit Heat Map */}
+            <HabitHeatMap onPress={() => router.push("/habits")} />
+
             {/* Financial Progress Card */}
-            <ProgressCard
+            <SavingsOverViewCard
                title="Savings Goal"
                statusMessage="You are on track to reach your emergency fund goal in 3 months."
                percentage={71}
                trend={8.5}
                trendText="this month"
-               tags={['savings', 'emergency fund', 'financial security']}
+               tags={['Savings', 'Emergency Fund', 'Financial Security']}
                amount="$7,100"
                targetAmount="$10,000"
                onPress={() => router.push("/finance")}
