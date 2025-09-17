@@ -1,5 +1,23 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
+
+// Simple in-memory storage for React Native
+const createMemoryStorage = () => {
+  const storage = new Map();
+  return {
+    getItem: (name: string) => {
+      return Promise.resolve(storage.get(name) || null);
+    },
+    setItem: (name: string, value: string) => {
+      storage.set(name, value);
+      return Promise.resolve();
+    },
+    removeItem: (name: string) => {
+      storage.delete(name);
+      return Promise.resolve();
+    },
+  };
+};
 
 /**
  * Dashboard Store with Mock Data System
@@ -812,6 +830,7 @@ export const useDashboardStore = create<DashboardStore>()(
     }),
     {
       name: "dashboard-storage",
+      storage: createJSONStorage(() => createMemoryStorage()),
       partialize: (state) => ({
         accounts: state.accounts,
         transactions: state.transactions.slice(0, 50), // Keep only recent transactions

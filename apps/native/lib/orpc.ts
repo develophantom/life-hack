@@ -4,6 +4,7 @@ import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import type { AppRouterClient } from "../../server/src/routers";
 import { authClient } from "@/lib/auth-client";
+import { getApiUrl, isDevelopment } from "@/lib/config";
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -14,7 +15,7 @@ export const queryClient = new QueryClient({
 });
 
 export const link = new RPCLink({
-  url: `${process.env.EXPO_PUBLIC_SERVER_URL}/rpc`,
+  url: `${getApiUrl()}/rpc`,
   headers() {
     const headers = new Map<string, string>();
     const cookies = authClient.getCookie();

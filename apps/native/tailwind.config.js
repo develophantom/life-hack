@@ -7,6 +7,9 @@ module.exports = {
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
+      fontFamily: {
+        'sans': ['Lato_400Regular', 'system-ui', 'sans-serif'],
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -40,6 +43,21 @@ module.exports = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
+        },
+        chart1: {
+          DEFAULT: 'hsl(var(--chart-1))',
+        },
+        chart2: {
+          DEFAULT: 'hsl(var(--chart-2))',
+        },
+        chart3: {
+          DEFAULT: 'hsl(var(--chart-3))',
+        },
+        chart4: {
+          DEFAULT: 'hsl(var(--chart-4))',
+        },
+        chart5: {
+          DEFAULT: 'hsl(var(--chart-5))',
         },
       },
       borderRadius: {

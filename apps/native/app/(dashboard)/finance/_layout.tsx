@@ -1,3 +1,4 @@
+import React from 'react';
 import { Stack } from "expo-router";
 
 export default function FinanceLayout() {
@@ -11,30 +12,44 @@ export default function FinanceLayout() {
         }}
       />
       <Stack.Screen
-        name="accounts"
+        name="add-account"
         options={{
           title: "Accounts",
           presentation: "modal",
         }}
       />
       <Stack.Screen
-        name="transactions"
+        name="edit-account"
         options={{
-          title: "Transactions",
-          presentation: "modal",
-        }}
-      />
-      <Stack.Screen
-        name="budgets"
-        options={{
-          title: "Budgets",
+          title: "Accounts",
           presentation: "modal",
         }}
       />
       <Stack.Screen
         name="add-transaction"
         options={{
+          title: "Transactions",
+          presentation: "modal",
+        }}
+      />
+      <Stack.Screen
+        name="add-budget"
+        options={{
+          title: "Budgets",
+          presentation: "modal",
+        }}
+      />
+      <Stack.Screen
+        name="edit-transaction"
+        options={{
           title: "Add Transaction",
+          presentation: "modal",
+        }}
+      />
+      <Stack.Screen
+        name="add-saving"
+        options={{
+          title: "Savings",
           presentation: "modal",
         }}
       />
