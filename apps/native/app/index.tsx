@@ -1,103 +1,193 @@
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { THEME } from '@/lib/theme';
-import { Link, Stack } from 'expo-router';
-import { MoonStarIcon, StarIcon, SunIcon } from 'lucide-react-native';
-import { useColorScheme } from 'nativewind';
+import { Link } from 'expo-router';
+import {
+  TargetIcon,
+  WalletIcon,
+  CalendarIcon,
+  ArrowRightIcon,
+} from 'lucide-react-native';
 import * as React from 'react';
-import { Image, type ImageStyle, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { fontStyles } from '@/lib/fonts';
 
-const LOGO = {
-  light: require('@/assets/images/react-native-reusables-light.png'),
-  dark: require('@/assets/images/react-native-reusables-dark.png'),
-};
-
-const SCREEN_OPTIONS = {
-  light: {
-    title: 'React Native Reusables',
-    headerTransparent: true,
-    headerShadowVisible: true,
-    headerStyle: { backgroundColor: THEME.light.background },
-    headerRight: () => <ThemeToggle />,
-  },
-  dark: {
-    title: 'React Native Reusables',
-    headerTransparent: true,
-    headerShadowVisible: true,
-    headerStyle: { backgroundColor: THEME.dark.background },
-    headerRight: () => <ThemeToggle />,
-  },
-};
-
-const IMAGE_STYLE: ImageStyle = {
-  height: 76,
-  width: 76,
-};
-
-export default function Screen() {
-  const { colorScheme } = useColorScheme();
+export default function LandingPage() {
 
   return (
-    <>
-      <Stack.Screen options={SCREEN_OPTIONS[colorScheme ?? 'light']} />
-      <View className="flex-1 items-center justify-center gap-8 p-4">
-        <Image source={LOGO[colorScheme ?? 'light']} style={IMAGE_STYLE} resizeMode="contain" />
-        <View className="gap-2 p-4">
-          <Text className="ios:text-foreground font-mono text-sm text-muted-foreground">
-            1. Edit <Text variant="code">app/index.tsx</Text> to get started.
-          </Text>
-          <Text className="ios:text-foreground font-mono text-sm text-muted-foreground">
-            2. Save to see your changes instantly.
-          </Text>
+    <ScrollView className="flex-1 bg-foreground" showsVerticalScrollIndicator={false}>
+      {/* Header */}
+      <View className="px-6 pt-12 pb-8">
+        <View className="flex-row items-center justify-between mb-8">
+          <View className="flex-row items-center gap-3">
+            <View className="w-10 h-10 bg-primary rounded-xl items-center justify-center">
+              <Icon as={TargetIcon} className="text-primary-foreground" size={24} />
+            </View>
+            <Text className="text-background text-2xl" style={fontStyles.black}>
+              HackLife
+            </Text>
+          </View>
         </View>
-        <View className="flex-row gap-2">
-          <Link href="https://reactnativereusables.com" asChild>
-            <Button>
-              <Text>Browse the Docs</Text>
-            </Button>
-          </Link>
-
-          <Link href="/(dashboard)" asChild>
-            <Button>
-              <Text>Dashboard</Text>
-            </Button>
-          </Link>
-
-          <Link href="/(dashboard)/finance/insight" asChild>
-            <Button>
-              <Text>Insight</Text>
-            </Button>
-          </Link>
 
 
-          <Link href="https://github.com/founded-labs/react-native-reusables" asChild>
-            <Button variant="ghost">
-              <Text>Star the Repo</Text>
-              <Icon as={StarIcon} />
+        {/* Hero Section */}
+        <View className="mb-8">
+          <Text className="text-background text-4xl mb-3" style={fontStyles.black}>
+            Transform Your Life
+          </Text>
+          <Text className="text-background text-4xl mb-4" style={fontStyles.black}>
+            One Habit at a Time
+          </Text>
+          <Text className="text-muted-foreground text-lg leading-relaxed mb-6" style={fontStyles.regular}>
+            Build better habits, manage your finances, and organize your schedule.
+            All in one powerful app designed to help you achieve your goals.
+          </Text>
+
+          <View className="gap-3">
+            <Link href="/register" asChild>
+              <Button className="w-full bg-muted-foreground">
+                <Text className="text-lg" style={fontStyles.bold}>Get Started</Text>
+                <Icon as={ArrowRightIcon} className="ml-2 text-background" size={20} />
+              </Button>
+            </Link>
+          </View>
+        </View>
+      </View>
+
+      {/* Features Section */}
+      <View className="px-6 mb-8">
+        <Text className="text-background text-2xl mb-6 text-center" style={fontStyles.black}>
+          Everything You Need to Succeed
+        </Text>
+
+        <View className="gap-4">
+          {/* Habit Tracking */}
+          <View className="bg-card p-4 rounded-xl border border-border">
+            <View className="flex-row items-center gap-3 mb-3">
+              <View className="w-10 h-10 bg-chart-1 rounded-lg items-center justify-center">
+                <Icon as={TargetIcon} className="text-foreground" size={24} />
+              </View>
+              <View className="flex-1">
+                <Text className="text-card-foreground text-xl mb-1" style={fontStyles.black}>
+                  Habit Tracking
+                </Text>
+                <Text className="text-muted-foreground text-sm" style={fontStyles.regular}>
+                  Build and maintain positive habits
+                </Text>
+              </View>
+            </View>
+            <Text className="text-muted-foreground text-sm leading-relaxed" style={fontStyles.regular}>
+              Track your daily habits with streak counters, analytics, and personalized insights.
+              Stay motivated with challenges and reminders.
+            </Text>
+          </View>
+
+          {/* Financial Management */}
+          <View className="bg-card p-4 rounded-xl border border-border">
+            <View className="flex-row items-center gap-3 mb-3">
+              <View className="w-10 h-10 bg-chart-2 rounded-lg items-center justify-center">
+                <Icon as={WalletIcon} className="text-foreground" size={24} />
+              </View>
+              <View className="flex-1">
+                <Text className="text-card-foreground text-xl mb-1" style={fontStyles.black}>
+                  Financial Management
+                </Text>
+                <Text className="text-muted-foreground text-sm" style={fontStyles.regular}>
+                  Take control of your finances
+                </Text>
+              </View>
+            </View>
+            <Text className="text-muted-foreground text-sm leading-relaxed" style={fontStyles.regular}>
+              Manage your accounts, track expenses, set budgets, and achieve your savings goals
+              with comprehensive financial tools.
+            </Text>
+          </View>
+
+          {/* Schedule Organization */}
+          <View className="bg-card p-4 rounded-xl border border-border">
+            <View className="flex-row items-center gap-3 mb-3">
+              <View className="w-10 h-10 bg-chart-3 rounded-lg items-center justify-center">
+                <Icon as={CalendarIcon} className="text-foreground" size={24} />
+              </View>
+              <View className="flex-1">
+                <Text className="text-card-foreground text-xl mb-1" style={fontStyles.black}>
+                  Schedule Organization
+                </Text>
+                <Text className="text-muted-foreground text-sm" style={fontStyles.regular}>
+                  Organize your time effectively
+                </Text>
+              </View>
+            </View>
+            <Text className="text-muted-foreground text-sm leading-relaxed" style={fontStyles.regular}>
+              Plan your day with meetings, tasks, and events. Stay organized and never miss
+              important appointments again.
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Stats Section */}
+      <View className="px-6 mb-8">
+        <View className="bg-muted p-6 rounded-xl">
+          <Text className="text-background text-xl mb-4 text-center" style={fontStyles.black}>
+            Join Thousands of Users
+          </Text>
+          <View className="flex-row justify-around">
+            <View className="items-center">
+              <Text className="text-background text-2xl mb-1" style={fontStyles.black}>
+                10K+
+              </Text>
+              <Text className="text-muted-foreground text-xs" style={fontStyles.regular}>
+                Active Users
+              </Text>
+            </View>
+            <View className="items-center">
+              <Text className="text-background text-2xl mb-1" style={fontStyles.black}>
+                1M+
+              </Text>
+              <Text className="text-muted-foreground text-xs" style={fontStyles.regular}>
+                Habits Tracked
+              </Text>
+            </View>
+            <View className="items-center">
+              <Text className="text-background text-2xl mb-1" style={fontStyles.black}>
+                95%
+              </Text>
+              <Text className="text-muted-foreground text-xs" style={fontStyles.regular}>
+                Success Rate
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      {/* CTA Section */}
+      <View className="px-6 mb-8">
+        <View className="bg-muted-foreground p-6 rounded-xl">
+          <Text className="text-primary-foreground text-2xl mb-3 text-center" style={fontStyles.black}>
+            Ready to Transform Your Life?
+          </Text>
+          <Text className="text-primary-foreground text-base mb-4 text-center opacity-90" style={fontStyles.regular}>
+            Start your journey towards better habits and financial freedom today.
+          </Text>
+          <Link href="/register" asChild>
+            <Button variant="secondary" className="w-full bg-primary">
+              <Text className="text-lg text-primary-foreground" style={fontStyles.bold}>Start Your Journey</Text>
+              <Icon as={ArrowRightIcon} className="ml-2 text-primary-foreground" size={20} />
             </Button>
           </Link>
         </View>
       </View>
-    </>
+
+      {/* Footer */}
+      <View className="px-6 pb-8">
+        <View className="border-t border-border pt-8">
+          <Text className="text-muted-foreground text-center text-sm" style={fontStyles.regular}>
+            © 2024 HackLife. All rights reserved.
+          </Text>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
-const THEME_ICONS = {
-  light: SunIcon,
-  dark: MoonStarIcon,
-};
-
-function ThemeToggle() {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
-
-  return (
-    <Button
-      onPressIn={toggleColorScheme}
-      size="icon"
-      variant="ghost"
-      className="rounded-full web:mx-4">
-      <Icon as={THEME_ICONS[colorScheme ?? 'light']} className="size-5" />
-    </Button>
-  );
-}

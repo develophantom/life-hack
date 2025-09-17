@@ -140,6 +140,8 @@ export default function DashboardScreen() {
                      <TouchableOpacity 
                         onPress={() => setShowFinancialData(!showFinancialData)}
                         className="ml-1"
+                        activeOpacity={1}
+                        style={{ opacity: 1 }}
                      >
                         <Text className="text-background text-2xl underline" style={fontStyles.bold}>
                            {showFinancialData ? `$${getTotalBalance().toFixed(2)}` : '$••••••'}

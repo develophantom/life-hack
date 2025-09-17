@@ -41,14 +41,17 @@ export default function RootLayout() {
 
 
    return (
-      <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
+      <ThemeProvider value={NAV_THEME['dark']}>
          <KeyboardProvider>
-            <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+            <StatusBar style="dark" />
             <Stack>
-               <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
-               <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+               <Stack.Protected guard={false}>
+                  <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+                  <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+               </Stack.Protected>
                <Stack.Screen name="index" options={{ headerShown: false }} />
-               <Stack.Screen name="(auth)" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
+               <Stack.Screen name="login" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
+               <Stack.Screen name="register" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
                <Stack.Screen name="+not-found" options={{ headerShown: false }} />
             </Stack>
             <PortalHost />
