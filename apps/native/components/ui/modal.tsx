@@ -29,17 +29,17 @@ export function Modal({
          onRequestClose={onClose}
       >
          <TouchableOpacity
-            className="flex-1 bg-muted-foreground/65 items-center justify-center px-5 py-14"
+            className="flex-1 bg-background/65 items-center justify-center px-5 py-14"
             activeOpacity={1}
             onPress={onClose}
          >
             <TouchableOpacity
-               className="bg-foreground rounded-2xl p-5 w-full max-w-sm shadow-xl max-h-[80vh]"
+               className="bg-card rounded-2xl p-5 w-full max-w-sm shadow-xl max-h-[80vh]"
                activeOpacity={1}
                onPress={(e) => e.stopPropagation()}
             >
                {/* Title */}
-               <Text style={fontStyles.bold} className="text-background text-xl mb-3">
+               <Text style={fontStyles.bold} className="text-card-foreground text-xl mb-3">
                   {title}
                </Text>
 

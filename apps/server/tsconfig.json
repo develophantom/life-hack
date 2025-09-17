@@ -13,10 +13,14 @@
     "outDir": "./dist",
     "types": [
         "bun"
-
     ],
     "composite": true,
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx"
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "**/react-native/**",
+    "**/@react-native/**"
+  ]
 }

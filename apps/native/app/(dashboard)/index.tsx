@@ -7,15 +7,13 @@ import {
    MoonIcon,
    WalletIcon,
    TrendingUpIcon,
-   TrendingDownIcon,
 } from "lucide-react-native";
-import React, { useRef } from "react";
+import React from "react";
 import { ScrollView, View, TouchableOpacity } from "react-native";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
-import { BottomSheet, BottomSheetRef } from "@/components/bottom-sheet";
 import { SavingsOverViewCard } from "@/components/dashboard/SavingOverViewCard";
 import { HabitHeatMap } from "@/components/dashboard/HabitHeatMap";
 import { Fab } from "@/components/ui/fab";

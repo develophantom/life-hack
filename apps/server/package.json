@@ -25,7 +25,8 @@
     "drizzle-orm": "^0.44.2",
     "@libsql/client": "^0.15.9",
     "better-auth": "^1.3.7",
-    "@better-auth/expo": "^1.3.7"
+    "@better-auth/expo": "^1.3.7",
+    "@hack-life/db": "workspace:*"
   },
   "devDependencies": {
     "tsdown": "^0.14.1",
