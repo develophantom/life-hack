@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Text } from '@/components/ui/text';
 import { useRouter } from 'expo-router';
+import { fontStyles } from '@/lib/fonts';
 import * as React from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 
@@ -33,8 +34,8 @@ export function SignUpForm() {
       <View className="gap-6">
          <Card className="bg-card border-border shadow-sm">
             <CardHeader>
-               <CardTitle className="text-center text-xl sm:text-left text-card-foreground">Create your account</CardTitle>
-               <CardDescription className="text-center sm:text-left text-muted-foreground">
+               <CardTitle className="text-center text-xl sm:text-left text-card-foreground" style={fontStyles.black}>Create your account</CardTitle>
+               <CardDescription className="text-center sm:text-left text-muted-foreground" style={fontStyles.regular}>
                   Welcome! Please fill in the details to get started.
                </CardDescription>
             </CardHeader>
@@ -68,21 +69,21 @@ export function SignUpForm() {
                      />
                   </View>
                   <Button className="w-full bg-primary" onPress={onSubmit}>
-                     <Text className="text-primary-foreground">Continue</Text>
+                     <Text className="text-primary-foreground" style={fontStyles.bold}>Continue</Text>
                   </Button>
                </View>
-               <Text className="text-center text-sm text-muted-foreground">
+               <Text className="text-center text-sm text-muted-foreground" style={fontStyles.regular}>
                   Already have an account?{' '}
                   <Pressable
                      onPress={() => {
                         router.push('/login');
                      }}>
-                     <Text className="text-sm underline underline-offset-4 text-primary">Sign in</Text>
+                     <Text className="text-sm underline underline-offset-4 text-primary" style={fontStyles.bold}>Sign in</Text>
                   </Pressable>
                </Text>
                <View className="flex-row items-center">
                   <Separator className="flex-1" />
-                  <Text className="text-muted-foreground px-4 text-sm">or</Text>
+                  <Text className="text-muted-foreground px-4 text-sm" style={fontStyles.regular}>or</Text>
                   <Separator className="flex-1" />
                </View>
                <SocialConnections />

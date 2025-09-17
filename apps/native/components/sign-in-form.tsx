@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Text } from '@/components/ui/text';
 import { useRouter } from 'expo-router';
+import { fontStyles } from '@/lib/fonts';
 import * as React from 'react';
 import { Pressable, type TextInput, View } from 'react-native';
 
@@ -29,10 +30,10 @@ export function SignInForm() {
 
    return (
       <View className="gap-6">
-         <Card className="border-border/0 sm:border-border shadow-none sm:shadow-sm sm:shadow-black/5">
+         <Card className="bg-card border-border shadow-sm">
             <CardHeader>
-               <CardTitle className="text-center text-xl sm:text-left">Sign in to your app</CardTitle>
-               <CardDescription className="text-center sm:text-left">
+               <CardTitle className="text-center text-xl sm:text-left text-card-foreground" style={fontStyles.black}>Sign in to your app</CardTitle>
+               <CardDescription className="text-center sm:text-left text-muted-foreground" style={fontStyles.regular}>
                   Welcome back! Please sign in to continue
                </CardDescription>
             </CardHeader>
@@ -41,6 +42,7 @@ export function SignInForm() {
                   <View className="gap-1.5">
                      <Label htmlFor="email">Email</Label>
                      <Input
+                        className="text-foreground"
                         id="email"
                         placeholder="m@example.com"
                         keyboardType="email-address"
@@ -61,10 +63,11 @@ export function SignInForm() {
                            onPress={() => {
                               // TODO: Navigate to forgot password screen
                            }}>
-                           <Text className="font-normal leading-4">Forgot your password?</Text>
+                           <Text className="font-normal leading-4 text-primary" style={fontStyles.regular}>Forgot your password?</Text>
                         </Button>
                      </View>
                      <Input
+                        className="text-foreground"
                         ref={passwordInputRef}
                         id="password"
                         secureTextEntry
@@ -72,23 +75,23 @@ export function SignInForm() {
                         onSubmitEditing={onSubmit}
                      />
                   </View>
-                  <Button className="w-full" onPress={onSubmit}>
-                     <Text>Continue</Text>
+                  <Button className="w-full bg-primary" onPress={onSubmit}>
+                     <Text className="text-primary-foreground" style={fontStyles.bold}>Continue</Text>
                   </Button>
                </View>
-               <Text className="text-center text-sm">
+               <Text className="text-center text-sm text-muted-foreground" style={fontStyles.regular}>
                   Don&apos;t have an account?{' '}
                   <Pressable
                      onPress={() => {
                         // TODO: Navigate to sign up screen
                         router.push('/register');
                      }}>
-                     <Text className="text-sm underline underline-offset-4">Sign up</Text>
+                     <Text className="text-sm underline underline-offset-4 text-primary" style={fontStyles.bold}>Sign up</Text>
                   </Pressable>
                </Text>
                <View className="flex-row items-center">
                   <Separator className="flex-1" />
-                  <Text className="text-muted-foreground px-4 text-sm">or</Text>
+                  <Text className="text-muted-foreground px-4 text-sm" style={fontStyles.regular}>or</Text>
                   <Separator className="flex-1" />
                </View>
                <SocialConnections />

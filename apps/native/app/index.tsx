@@ -63,10 +63,10 @@ export default function LandingPage() {
                               <Icon as={TargetIcon} className="text-foreground" size={24} />
                            </View>
                            <View className="flex-1">
-                              <CardTitle className="text-card-foreground text-xl">
+                              <CardTitle className="text-card-foreground text-xl" style={fontStyles.black}>
                                  Habit Tracking
                               </CardTitle>
-                              <CardDescription className="text-foreground text-sm">
+                              <CardDescription className="text-foreground text-sm" style={fontStyles.regular}>
                                  Build and maintain positive habits
                               </CardDescription>
                            </View>
@@ -88,10 +88,10 @@ export default function LandingPage() {
                               <Icon as={WalletIcon} className="text-foreground" size={24} />
                            </View>
                            <View className="flex-1">
-                              <CardTitle className="text-card-foreground text-xl">
+                              <CardTitle className="text-card-foreground text-xl" style={fontStyles.black}>
                                  Financial Management
                               </CardTitle>
-                              <CardDescription className="text-foreground text-sm">
+                              <CardDescription className="text-foreground text-sm" style={fontStyles.regular}>
                                  Take control of your finances
                               </CardDescription>
                            </View>
@@ -113,10 +113,10 @@ export default function LandingPage() {
                               <Icon as={CalendarIcon} className="text-foreground" size={24} />
                            </View>
                            <View className="flex-1">
-                              <CardTitle className="text-card-foreground text-xl">
+                              <CardTitle className="text-card-foreground text-xl" style={fontStyles.black}>
                                  Schedule Organization
                               </CardTitle>
-                              <CardDescription className="text-foreground text-sm">
+                              <CardDescription className="text-foreground text-sm" style={fontStyles.regular}>
                                  Organize your time effectively
                               </CardDescription>
                            </View>
@@ -176,7 +176,7 @@ export default function LandingPage() {
                   <Text className="text-primary-foreground text-base mb-4 text-center opacity-90" style={fontStyles.regular}>
                      Start your journey towards better habits and financial freedom today.
                   </Text>
-                  <Link href="/register" asChild>
+                  <Link href="/(dashboard)" asChild>
                      <Button variant="secondary" className="w-full bg-background">
                         <Text className="text-lg text-foreground" style={fontStyles.bold}>Start Your Journey</Text>
                         <Icon as={ArrowRightIcon} className="ml-2 text-foreground" size={20} />

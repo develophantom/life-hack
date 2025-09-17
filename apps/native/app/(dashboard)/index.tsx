@@ -79,18 +79,18 @@ export default function DashboardScreen() {
 
 
    return (
-      <View className="flex-1 bg-foreground">
+      <View className="flex-1 bg-background">
          {/* Header Section - Dark Background */}
          <View className="px-6 pt-12 pb-8">
             {/* Day and Date */}
             <View className="flex-row items-center justify-between mb-6">
                <View className="flex-row items-baseline gap-2">
-                  <Text style={fontStyles.black} className="text-background text-4xl">{dayOfWeek}</Text>
+                  <Text style={fontStyles.black} className="text-foreground text-4xl">{dayOfWeek}</Text>
                   <View className="w-5 h-5 bg-destructive rounded-full mt-1" />
                </View>
                <View className="items-end" >
-                  <Text style={fontStyles.black} className="text-background text-lg">{monthDay}</Text>
-                  <Text style={fontStyles.black} className="text-background text-sm opacity-70">{year}</Text>
+                  <Text style={fontStyles.black} className="text-foreground text-lg">{monthDay}</Text>
+                  <Text style={fontStyles.black} className="text-foreground text-sm opacity-70">{year}</Text>
                </View>
             </View>
 
@@ -102,53 +102,53 @@ export default function DashboardScreen() {
             {/* Daily Summary */}
             <View className="mb-6">
                <View className="flex-row flex-wrap items-center mb-2">
-                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                  <Text className="text-foreground text-2xl" style={fontStyles.bold}>
                      Today you have{" "}
                   </Text>
                   <View className="flex-row items-center mx-1">
-                     <Icon as={CalendarIcon} className="text-background" size={16} />
-                     <Text className="text-background text-2xl ml-1" style={fontStyles.bold}>
+                     <Icon as={CalendarIcon} className="text-foreground" size={16} />
+                     <Text className="text-foreground text-2xl ml-1" style={fontStyles.bold}>
                         {dashboardData.totalMeetings}
                      </Text>
                   </View>
-                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                  <Text className="text-foreground text-2xl" style={fontStyles.bold}>
                      {" "}meetings,{" "}
                   </Text>
                   <View className="flex-row items-center mx-1">
-                     <Icon as={CheckCircleIcon} className="text-background" size={16} />
-                     <Text className="text-background text-2xl ml-1" style={fontStyles.bold}>
+                     <Icon as={CheckCircleIcon} className="text-foreground" size={16} />
+                     <Text className="text-foreground text-2xl ml-1" style={fontStyles.bold}>
                         {dashboardData.totalTasks}
                      </Text>
                   </View>
-                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                  <Text className="text-foreground text-2xl" style={fontStyles.bold}>
                      {" "}tasks,{" "}
                   </Text>
                   <View className="flex-row items-center mx-1">
-                     <Icon as={TargetIcon} className="text-background" size={16} />
-                     <Text className="text-background text-2xl ml-1" style={fontStyles.bold}>
+                     <Icon as={TargetIcon} className="text-foreground" size={16} />
+                     <Text className="text-foreground text-2xl ml-1" style={fontStyles.bold}>
                         {totalHabits}
                      </Text>
                   </View>
-                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                  <Text className="text-foreground text-2xl" style={fontStyles.bold}>
                      {" "}habit{totalHabits !== 1 ? 's' : ''}
                   </Text>
-                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                  <Text className="text-foreground text-2xl" style={fontStyles.bold}>
                      {" "}and{" "}
                   </Text>
                   <View className="flex-row items-center mx-1">
-                     <Icon as={WalletIcon} className="text-background" size={16} />
-                     <TouchableOpacity 
+                     <Icon as={WalletIcon} className="text-foreground" size={16} />
+                     <TouchableOpacity
                         onPress={() => setShowFinancialData(!showFinancialData)}
                         className="ml-1"
                         activeOpacity={1}
                         style={{ opacity: 1 }}
                      >
-                        <Text className="text-background text-2xl underline" style={fontStyles.bold}>
+                        <Text className="text-foreground text-2xl underline" style={fontStyles.bold}>
                            {showFinancialData ? `$${getTotalBalance().toFixed(2)}` : '$••••••'}
                         </Text>
                      </TouchableOpacity>
                   </View>
-                  <Text className="text-background text-2xl" style={fontStyles.bold}>
+                  <Text className="text-foreground text-2xl" style={fontStyles.bold}>
                      {" "}available.
                   </Text>
                </View>
@@ -161,14 +161,14 @@ export default function DashboardScreen() {
             {/* Activity Metrics */}
             <View className="flex-row gap-6 mb-4">
                <View className="flex-row items-center gap-2">
-                  <Icon as={ActivityIcon} className="text-background" size={20} />
-                  <Text className="text-background" style={fontStyles.bold}>
+                  <Icon as={ActivityIcon} className="text-foreground" size={20} />
+                  <Text className="text-foreground" style={fontStyles.bold}>
                      {Math.floor(dashboardData.dailyMetrics.steps / 1000)}.{(dashboardData.dailyMetrics.steps % 1000) / 100}K steps
                   </Text>
                </View>
                <View className="flex-row items-center gap-2">
                   <Icon as={MoonIcon} className="text-orange-500" size={20} />
-                  <Text className="text-background font-semibold">
+                  <Text className="text-foreground" style={fontStyles.bold}>
                      {dashboardData.dailyMetrics.sleepHours} hours
                   </Text>
                </View>
@@ -179,13 +179,13 @@ export default function DashboardScreen() {
                <View className="flex-row gap-6">
                   <View className="flex-row items-center gap-2">
                      <Icon as={TrendingUpIcon} className="text-green-500" size={20} />
-                     <Text className="text-background" style={fontStyles.bold}>
+                     <Text className="text-foreground" style={fontStyles.bold}>
                         {budgetCategories.filter(cat => cat.spent <= cat.budget).length}/{budgetCategories.length} budgets on track
                      </Text>
                   </View>
                   <View className="flex-row items-center gap-2">
                      <Icon as={WalletIcon} className="text-blue-500" size={20} />
-                     <Text className="text-background" style={fontStyles.bold}>
+                     <Text className="text-foreground" style={fontStyles.bold}>
                         {getRecentTransactions(5).filter(tx => tx.type === 'income').length} recent transactions
                      </Text>
                   </View>
@@ -200,11 +200,11 @@ export default function DashboardScreen() {
             <View className="px-6 mb-6">
                <View className="flex-row gap-3">
                   <Button
-                     className="flex-1 bg-muted-foreground"
+                     className="flex-1 bg-primary"
                      onPress={() => router.push("/habits/add-habit")}
                   >
-                     <Icon as={TargetIcon} size={20} className="text-background" />
-                     <Text className="ml-2">Add Habit</Text>
+                     <Icon as={TargetIcon} size={20} className="text-primary-foreground" />
+                     <Text className="ml-2 text-primary-foreground" style={fontStyles.bold}>Add Habit</Text>
                   </Button>
 
                   <Button
@@ -212,8 +212,8 @@ export default function DashboardScreen() {
                      variant="outline"
                      onPress={() => router.push("/finance/add-transaction")}
                   >
-                     <Icon as={WalletIcon} size={20} />
-                     <Text className="ml-2">Add Transaction</Text>
+                     <Icon as={WalletIcon} size={20} className="text-foreground" />
+                     <Text className="ml-2 text-foreground" style={fontStyles.bold}>Add Transaction</Text>
                   </Button>
                </View>
             </View>
@@ -221,11 +221,11 @@ export default function DashboardScreen() {
             {/* Today's Habits Summary */}
             {totalHabits > 0 && (
                <View className="px-6 mb-6">
-                  <Card>
+                  <Card className="bg-card">
                      <CardContent className="p-4">
                         <View className="flex-row items-center justify-between mb-3">
-                           <Text className="font-semibold">Today's Habits</Text>
-                           <Text className="text-sm text-gray-500">
+                           <Text className="font-semibold text-card-foreground" style={fontStyles.bold}>Today's Habits</Text>
+                           <Text className="text-sm text-muted-foreground" style={fontStyles.regular}>
                               {completedHabits}/{totalHabits} completed
                            </Text>
                         </View>
@@ -233,13 +233,13 @@ export default function DashboardScreen() {
                         <View className="space-y-2">
                            {todayHabits.slice(0, 3).map((habit) => (
                               <View key={habit.id} className="flex-row items-center gap-3">
-                                 <View className={`w-4 h-4 rounded border-2 ${habit.completedToday ? 'bg-green-500 border-green-500' : 'border-gray-300'}`}>
+                                 <View className={`w-4 h-4 rounded border-2 ${habit.completedToday ? 'bg-green-500 border-green-500' : 'border-muted-foreground'}`}>
                                     {habit.completedToday && (
                                        <Icon as={CheckCircleIcon} className="text-white" size={12} />
                                     )}
                                  </View>
-                                 <Text className="flex-1">{habit.name}</Text>
-                                 <Text className="text-sm text-gray-500">
+                                 <Text className="flex-1 text-card-foreground" style={fontStyles.regular}>{habit.name}</Text>
+                                 <Text className="text-sm text-muted-foreground" style={fontStyles.regular}>
                                     {habit.currentStreak} day streak
                                  </Text>
                               </View>
@@ -252,7 +252,7 @@ export default function DashboardScreen() {
                               className="mt-3"
                               onPress={() => router.push("/habits")}
                            >
-                              <Text>View All Habits</Text>
+                              <Text className="text-foreground" style={fontStyles.bold}>View All Habits</Text>
                            </Button>
                         )}
                      </CardContent>
@@ -294,7 +294,7 @@ export default function DashboardScreen() {
                      onPress={() => setShowModal(false)}
                      className="bg-muted border-border"
                   >
-                     <Text className="text-sm">View All</Text>
+                     <Text className="text-sm text-foreground" style={fontStyles.bold}>View All</Text>
                   </Button>
                </View>
 
@@ -306,10 +306,10 @@ export default function DashboardScreen() {
 
                      return (
                         <View key={`${date.getFullYear()}-${date.getMonth()}-${dayNumber}`} className={`items-center p-2 rounded-lg ${isToday ? 'bg-muted border border-border' : ''}`}>
-                           <Text className={`text-lg font-bold ${isToday ? 'text-foreground' : 'text-muted-foreground'}`}>
+                           <Text className={`text-lg ${isToday ? 'text-foreground' : 'text-muted-foreground'}`} style={fontStyles.bold}>
                               {dayNumber}
                            </Text>
-                           <Text className={`text-xs ${isToday ? 'text-destructive' : 'text-muted-foreground'}`}>
+                           <Text className={`text-xs ${isToday ? 'text-destructive' : 'text-muted-foreground'}`} style={fontStyles.regular}>
                               {dayName}
                            </Text>
                         </View>
@@ -321,7 +321,7 @@ export default function DashboardScreen() {
                   {dashboardData.todayEvents.map((event) => (
                      <View key={event.id} className="flex-row items-center gap-3">
                         <View className={`w-2 h-2 rounded-full ${getEventColor(event.color)}`} />
-                        <Text style={fontStyles.bold} className="flex-1 font-medium text-muted-foreground">{event.title}</Text>
+                        <Text style={fontStyles.bold} className="flex-1 text-foreground">{event.title}</Text>
                         {event.time && (
                            <Text style={fontStyles.regular} className="text-muted-foreground text-sm">{event.time}</Text>
                         )}

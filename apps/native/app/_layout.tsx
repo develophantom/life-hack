@@ -45,9 +45,10 @@ export default function RootLayout() {
          <KeyboardProvider>
             <StatusBar style="dark" />
             <Stack>
-               <Stack.Protected guard={false}>
-                  <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+               <Stack.Protected guard={true}>
                   <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+                  <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+
                </Stack.Protected>
                <Stack.Screen name="index" options={{ headerShown: false }} />
                <Stack.Screen name="login" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
