@@ -6,4 +6,3 @@ const serverDb = createServerDatabase({
 });
 
 export const db = serverDb.database;
-
