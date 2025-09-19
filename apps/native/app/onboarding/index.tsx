@@ -1,87 +1,133 @@
 import React from "react";
-import { router } from "expo-router";
-import { HeartIcon, TrendingUpIcon, ZapIcon } from "lucide-react-native";
-import { View } from "react-native";
+import { router, Link } from "expo-router";
+import { HeartIcon, TrendingUpIcon, ZapIcon, ArrowRightIcon } from "lucide-react-native";
+import { View, ScrollView } from "react-native";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
+import { fontStyles } from "@/lib/fonts";
 
 export default function WelcomeScreen() {
-  const handleGetStarted = () => {
-    router.push("/onboarding/profile");
-  };
-
   return (
     <Container>
-      <View className="flex-1 items-center justify-center gap-8 p-6">
-        {/* Logo/Icon */}
-        <View className="items-center gap-4">
-          <View className="rounded-full bg-primary p-6">
-            <Icon
-              as={HeartIcon}
-              className="text-primary-foreground"
-              size={32}
-            />
+      <ScrollView
+        className="flex-1"
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View className="flex-1 justify-between px-8 py-12">
+          {/* Top Section */}
+          <View className="flex-1 justify-center">
+            {/* Main Message */}
+            <View className="mb-20">
+              <Text
+                className="text-4xl leading-tight mb-4 text-start"
+                style={fontStyles.black}
+              >
+                Build Better Habits
+              </Text>
+              <Text
+                className="text-lg text-muted-foreground text-center leading-relaxed px-4"
+                style={fontStyles.regular}
+              >
+                Track your progress, optimize your finances, and achieve your goals with intelligent insights.
+              </Text>
+            </View>
+
+            {/* Simple Feature List */}
+            <View className="gap-6 mb-8">
+              <View className="flex-row items-center gap-4">
+                <View className="w-12 h-12 rounded-xl bg-primary/10 items-center justify-center">
+                  <Icon as={TrendingUpIcon} className="text-primary" size={24} />
+                </View>
+                <View className="flex-1">
+                  <Text
+                    className="text-lg mb-1"
+                    style={fontStyles.bold}
+                  >
+                    Habit Tracking
+                  </Text>
+                  <Text
+                    className="text-muted-foreground"
+                    style={fontStyles.regular}
+                  >
+                    Build consistent routines
+                  </Text>
+                </View>
+              </View>
+
+              <View className="flex-row items-center gap-4">
+                <View className="w-12 h-12 rounded-xl bg-primary/10 items-center justify-center">
+                  <Icon as={ZapIcon} className="text-primary" size={24} />
+                </View>
+                <View className="flex-1">
+                  <Text
+                    className="text-lg mb-1"
+                    style={fontStyles.bold}
+                  >
+                    Smart Finance
+                  </Text>
+                  <Text
+                    className="text-muted-foreground"
+                    style={fontStyles.regular}
+                  >
+                    Control your money flow
+                  </Text>
+                </View>
+              </View>
+
+              <View className="flex-row items-center gap-4">
+                <View className="w-12 h-12 rounded-xl bg-primary/10 items-center justify-center">
+                  <Icon as={HeartIcon} className="text-primary" size={24} />
+                </View>
+                <View className="flex-1">
+                  <Text
+                    className="text-lg mb-1"
+                    style={fontStyles.bold}
+                  >
+                    AI Insights
+                  </Text>
+                  <Text
+                    className="text-muted-foreground"
+                    style={fontStyles.regular}
+                  >
+                    Personalized recommendations
+                  </Text>
+                </View>
+              </View>
+            </View>
           </View>
-          <Text className="text-center" variant="h1">
-            Hack-Life
-          </Text>
-        </View>
 
-        {/* Tagline */}
-        <View className="items-center gap-2">
-          <Text className="text-center" variant="h2">
-            Track your habits, master your money
-          </Text>
-          <Text className="text-center" variant="lead">
-            Your personal life tracker with AI-powered insights
-          </Text>
-        </View>
+          {/* Bottom Actions */}
+          <View className="gap-4">
+            <Link href="/onboarding/profile" asChild>
+              <Button className="w-full h-14">
+                <View className="flex-row items-center gap-3">
+                  <Text
+                    className="text-primary-foreground text-lg"
+                    style={fontStyles.bold}
+                  >
+                    Get Started
+                  </Text>
+                  <Icon as={ArrowRightIcon} className="text-primary-foreground" size={20} />
+                </View>
+              </Button>
+            </Link>
 
-        {/* Benefits */}
-        <Card className="w-full">
-          <CardContent className="gap-4">
-            <View className="flex-row items-center gap-3">
-              <Icon as={TrendingUpIcon} className="text-primary" size={20} />
-              <View className="flex-1">
-                <Text className="font-semibold">Build lasting habits</Text>
-                <Text variant="muted">Track progress and stay motivated</Text>
-              </View>
-            </View>
-
-            <View className="flex-row items-center gap-3">
-              <Icon as={ZapIcon} className="text-primary" size={20} />
-              <View className="flex-1">
-                <Text className="font-semibold">Achieve financial goals</Text>
-                <Text variant="muted">
-                  Smart budgeting and expense tracking
+            <Link href="/(dashboard)" asChild>
+              <Button variant="ghost" className="h-12">
+                <Text
+                  className="text-muted-foreground"
+                  style={fontStyles.regular}
+                >
+                  Skip for now
                 </Text>
-              </View>
-            </View>
-
-            <View className="flex-row items-center gap-3">
-              <Icon as={HeartIcon} className="text-primary" size={20} />
-              <View className="flex-1">
-                <Text className="font-semibold">Get personalized insights</Text>
-                <Text variant="muted">AI learns from your patterns</Text>
-              </View>
-            </View>
-          </CardContent>
-        </Card>
-
-        {/* CTA */}
-        <View className="w-full gap-3">
-          <Button className="w-full" onPress={handleGetStarted}>
-            <Text>Let's set up your dashboard</Text>
-          </Button>
-
-          <Button onPress={() => router.push("/(dashboard)")} variant="ghost">
-            <Text>Skip setup for now</Text>
-          </Button>
+              </Button>
+            </Link>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </Container>
   );
 }

@@ -18,51 +18,56 @@ import { authClient } from '@/lib/auth-client';
 SplashScreen.preventAutoHideAsync();
 
 export {
-   // Catch any errors thrown by the Layout component.
-   ErrorBoundary,
+  // Catch any errors thrown by the Layout component.
+  ErrorBoundary,
 } from 'expo-router';
 
 export default function RootLayout() {
-   const { colorScheme } = useColorScheme();
+  const { colorScheme } = useColorScheme();
 
-   const [loaded, error] = useFonts({
-      Lato_400Regular,
-      Lato_700Bold,
-      Lato_900Black,
+  const [loaded, error] = useFonts({
+    Lato_400Regular,
+    Lato_700Bold,
+    Lato_900Black,
 
-   });
+  });
 
-   const session = authClient.getSession()
+  const { data: session } = authClient.useSession()
 
-   useEffect(() => {
-      if (loaded || error) {
-         SplashScreen.hideAsync();
-      }
-   }, [loaded, error]);
+  console.log("-------------Main_layout.tsx------------")
+  console.log("user ", session?.user)
+  console.log("session ", session?.session)
+  console.log("-------------EOD Main_layout.tsx------------")
 
-   if (!loaded && !error) {
-      return null;
-   }
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
 
 
-   return (
-      <QueryClientProvider client={queryClient}>
-         <ThemeProvider value={NAV_THEME['dark']}>
-            <KeyboardProvider>
-               <StatusBar style="dark" />
-               <Stack>
-                  <Stack.Protected guard={true}>
-                     <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-                     <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
-                  </Stack.Protected>
-                  <Stack.Screen name="index" options={{ headerShown: false }} />
-                  <Stack.Screen name="login" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
-                  <Stack.Screen name="register" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
-                  <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-               </Stack>
-               <PortalHost />
-            </KeyboardProvider>
-         </ThemeProvider>
-      </QueryClientProvider>
-   );
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={NAV_THEME['dark']}>
+        <KeyboardProvider>
+          <StatusBar style="dark" />
+          <Stack>
+            <Stack.Protected guard={!!session?.user}>
+              <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+              <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+            </Stack.Protected>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="login" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
+            <Stack.Screen name="register" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
+            <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+          </Stack>
+          <PortalHost />
+        </KeyboardProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
 }

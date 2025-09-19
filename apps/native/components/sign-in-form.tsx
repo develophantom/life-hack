@@ -1,4 +1,5 @@
 import { SocialConnections } from '@/components/social-connections';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
    Card,
@@ -14,14 +15,20 @@ import { Text } from '@/components/ui/text';
 import { useRouter } from 'expo-router';
 import { fontStyles } from '@/lib/fonts';
 import { authClient } from '@/lib/auth-client';
+import { AlertCircleIcon, CheckCircle2Icon, MailIcon } from 'lucide-react-native';
 import * as React from 'react';
-import { Pressable, type TextInput, View, Alert } from 'react-native';
+import { Pressable, type TextInput, View } from 'react-native';
 
 export function SignInForm() {
    const router = useRouter()
    const [email, setEmail] = React.useState('');
    const [password, setPassword] = React.useState('');
    const [isLoading, setIsLoading] = React.useState(false);
+   const [alert, setAlert] = React.useState<{
+      type: 'success' | 'error' | 'info';
+      title: string;
+      description: string;
+   } | null>(null);
 
    const passwordInputRef = React.useRef<TextInput>(null);
 
@@ -31,11 +38,16 @@ export function SignInForm() {
 
    async function onSubmit() {
       if (!email || !password) {
-         Alert.alert('Error', 'Please fill in all fields');
+         setAlert({
+            type: 'error',
+            title: 'Missing Information',
+            description: 'Please fill in all fields to continue.'
+         });
          return;
       }
 
       setIsLoading(true);
+      setAlert(null); // Clear any existing alerts
 
       try {
          const result = await authClient.signIn.email({
@@ -45,34 +57,51 @@ export function SignInForm() {
 
          if (result.error) {
             if (result.error.message?.includes('email') || result.error.message?.includes('user')) {
-               Alert.alert('Login Failed', 'Invalid email or user not found');
+               setAlert({
+                  type: 'error',
+                  title: 'Login Failed',
+                  description: 'Invalid email or user not found. Please check your email address.'
+               });
             } else if (result.error.message?.includes('password') || result.error.message?.includes('credentials')) {
-               Alert.alert('Login Failed', 'Invalid password');
+               setAlert({
+                  type: 'error',
+                  title: 'Login Failed',
+                  description: 'Invalid password. Please check your password and try again.'
+               });
             } else if (result.error.message?.includes('verified') || result.error.message?.includes('verification')) {
-               Alert.alert(
-                  'Account Not Verified',
-                  'Please check your email and verify your account before logging in.',
-                  [{ text: 'OK' }]
-               );
+               setAlert({
+                  type: 'info',
+                  title: 'Account Not Verified',
+                  description: 'Please check your email and verify your account before logging in.'
+               });
             } else {
-               Alert.alert('Login Failed', result.error.message || 'An error occurred');
+               setAlert({
+                  type: 'error',
+                  title: 'Login Failed',
+                  description: result.error.message || 'An error occurred during login. Please try again.'
+               });
             }
             return;
          }
 
-         Alert.alert(
-            'Login Successful',
-            'Welcome back to Hack-Life!',
-            [
-               {
-                  text: 'Continue',
-                  onPress: () => router.push('/(dashboard)'),
-               },
-            ]
-         );
+         setAlert({
+            type: 'success',
+            title: 'Welcome Back!',
+            description: 'You have successfully signed in to Hack-Life!'
+         });
+
+         // Navigate to dashboard after a short delay
+         setTimeout(() => {
+            router.push('/(dashboard)');
+         }, 1500);
+
       } catch (error) {
          console.error('Login error:', error);
-         Alert.alert('Login Failed', 'An unexpected error occurred. Please try again.');
+         setAlert({
+            type: 'error',
+            title: 'Login Failed',
+            description: 'An unexpected error occurred. Please try again.'
+         });
       } finally {
          setIsLoading(false);
       }
@@ -80,6 +109,17 @@ export function SignInForm() {
 
    return (
       <View className="gap-6">
+         {/* Alert Messages */}
+         {alert && (
+            <Alert
+               icon={alert.type === 'success' ? CheckCircle2Icon : alert.type === 'info' ? MailIcon : AlertCircleIcon}
+               variant={alert.type === 'error' ? 'destructive' : 'default'}
+            >
+               <AlertTitle>{alert.title}</AlertTitle>
+               <AlertDescription>{alert.description}</AlertDescription>
+            </Alert>
+         )}
+
          <Card className="bg-card border-border shadow-sm">
             <CardHeader>
                <CardTitle className="text-center text-xl sm:text-left text-card-foreground" style={fontStyles.black}>Sign in to your app</CardTitle>
@@ -113,14 +153,11 @@ export function SignInForm() {
                            size="sm"
                            className="web:h-fit ml-auto h-4 px-1 py-0 sm:h-4"
                            onPress={() => {
-                              Alert.alert(
-                                 'Reset Password',
-                                 'Enter your email address and we\'ll send you a link to reset your password.',
-                                 [
-                                    { text: 'Cancel', style: 'cancel' },
-                                    { text: 'Send Reset Link', onPress: () => console.log('Send password reset email') },
-                                 ]
-                              );
+                              setAlert({
+                                 type: 'info',
+                                 title: 'Password Reset',
+                                 description: 'Password reset functionality will be implemented soon. Please contact support for assistance.'
+                              });
                            }}>
                            <Text className="font-normal leading-4 text-primary" style={fontStyles.regular}>Forgot your password?</Text>
                         </Button>

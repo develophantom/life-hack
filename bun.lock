@@ -146,12 +146,12 @@
       "version": "1.0.0",
       "dependencies": {
         "@libsql/client": "^0.15.15",
-        "@op-engineering/op-sqlite": "14.1.4",
-        "@react-native-community/netinfo": "11.4.1",
         "drizzle-orm": "^0.44.5",
         "zod": "^3.25.76",
       },
       "peerDependencies": {
+        "@op-engineering/op-sqlite": "14.1.4",
+        "@react-native-community/netinfo": "11.4.1",
         "react": ">=19.1.0",
         "react-native": ">=0.81.4",
       },
