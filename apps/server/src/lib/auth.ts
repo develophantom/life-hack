@@ -15,6 +15,7 @@ export const auth = betterAuth({
       process.env.CORS_ORIGIN || "",
       "lifehack-app://",
    ],
+
    emailAndPassword: {
       enabled: true,
    },

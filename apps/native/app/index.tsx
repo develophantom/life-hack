@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { ConnectionStatusIndicator, ConnectionStatusDot } from '@/components/connection-status-indicator';
+import { ConnectionDebug } from '@/components/connection-debug';
 import { Link } from 'expo-router';
 import {
    TargetIcon,
@@ -59,6 +60,14 @@ export default function LandingPage() {
                <Text className="text-foreground text-2xl mb-6 text-center" style={fontStyles.black}>
                   Everything You Need to Succeed
                </Text>
+
+               {/* Connection Status */}
+               <View className="mb-6">
+                  <ConnectionStatusIndicator size="md" />
+               </View>
+
+               {/* Debug Info */}
+               <ConnectionDebug />
 
                <View className="gap-4">
                   {/* Habit Tracking */}

@@ -1,5 +1,7 @@
+import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { orpc } from '@/lib/orpc';
+import { getApiUrl } from '@/lib/config';
 
 export type ConnectionStatus = 'connected' | 'disconnected' | 'connecting' | 'error';
 
@@ -16,6 +18,16 @@ export function useConnectionStatus() {
       retry: 1,
       retryDelay: 5000,
    });
+
+   // Log connection info for debugging
+   React.useEffect(() => {
+      if (error) {
+         console.log('--------------------------------');
+         console.log('Connection error:', error);
+         console.log('API URL use-connection-status:', getApiUrl());
+         console.log('--------------------------------');
+      }
+   }, [error]);
 
    const getStatus = (): ConnectionStatus => {
       if (isLoading) return 'connecting';

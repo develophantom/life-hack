@@ -59,7 +59,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
          // Environment-specific configuration
          environment: process.env.NODE_ENV || 'development',
          apiUrl: isDev
-            ? 'http://localhost:3000'
+            ? (process.env.EXPO_PUBLIC_SERVER_URL?.trim() || 'http://10.255.21.253:3000')
             : 'https://your-production-api.com',
          enableDevTools: isDev,
       },
