@@ -14,11 +14,15 @@ import { Text } from '@/components/ui/text';
 import { useRouter } from 'expo-router';
 import { fontStyles } from '@/lib/fonts';
 import * as React from 'react';
-import { Pressable, TextInput, View } from 'react-native';
+import { Pressable, TextInput, View, Alert } from 'react-native';
+import { authClient } from "@/lib/auth-client";
 
 export function SignUpForm() {
 
    const router = useRouter()
+   const [email, setEmail] = React.useState('');
+   const [password, setPassword] = React.useState('');
+   const [isLoading, setIsLoading] = React.useState(false);
 
    const passwordInputRef = React.useRef<TextInput>(null);
 
@@ -26,9 +30,45 @@ export function SignUpForm() {
       passwordInputRef.current?.focus();
    }
 
-   function onSubmit() {
-      // TODO: Submit form and navigate to protected screen if successful
+   async function onSubmit() {
+      if (!email || !password) {
+         Alert.alert('Error', 'Please fill in all fields');
+         return;
+      }
+
+      setIsLoading(true);
+
+      try {
+         const result = await authClient.signUp.email({
+            email: email,
+            password: password,
+            name: email.split('@')[0] // Use email prefix as name
+         });
+
+         if (result.error) {
+            Alert.alert('Registration Failed', result.error.message || 'An error occurred');
+            return;
+         }
+
+         Alert.alert(
+            'Registration Successful',
+            'Welcome to Hack-Life! Please check your email to verify your account.',
+            [
+               {
+                  text: 'Continue',
+                  onPress: () => router.push('/onboarding'),
+               },
+            ]
+         );
+      } catch (error) {
+         console.error('Registration error:', error);
+         Alert.alert('Registration Failed', 'An unexpected error occurred. Please try again.');
+      } finally {
+         setIsLoading(false);
+      }
    }
+
+
 
    return (
       <View className="gap-6">
@@ -50,6 +90,8 @@ export function SignUpForm() {
                         keyboardType="email-address"
                         autoComplete="email"
                         autoCapitalize="none"
+                        value={email}
+                        onChangeText={setEmail}
                         onSubmitEditing={onEmailSubmitEditing}
                         returnKeyType="next"
                         submitBehavior="submit"
@@ -64,12 +106,21 @@ export function SignUpForm() {
                         ref={passwordInputRef}
                         id="password"
                         secureTextEntry
+                        value={password}
+                        onChangeText={setPassword}
                         returnKeyType="send"
                         onSubmitEditing={onSubmit}
+                        autoComplete="password"
                      />
                   </View>
-                  <Button className="w-full bg-primary" onPress={onSubmit}>
-                     <Text className="text-primary-foreground" style={fontStyles.bold}>Continue</Text>
+                  <Button
+                     className={`w-full ${email && password && !isLoading ? 'bg-primary' : 'bg-gray-400'}`}
+                     onPress={onSubmit}
+                     disabled={!email || !password || isLoading}
+                  >
+                     <Text className="text-primary-foreground" style={fontStyles.bold}>
+                        {isLoading ? 'Creating Account...' : 'Continue'}
+                     </Text>
                   </Button>
                </View>
                <Text className="text-center text-sm text-muted-foreground" style={fontStyles.regular}>

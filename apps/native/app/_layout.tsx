@@ -10,6 +10,9 @@ import { useColorScheme } from 'nativewind';
 import { useFonts, Lato_400Regular, Lato_700Bold, Lato_900Black } from '@expo-google-fonts/lato';
 import * as SplashScreen from 'expo-splash-screen';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { queryClient } from '@/lib/orpc';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { authClient } from '@/lib/auth-client';
 
 // Prevent the splash screen from auto-hiding before fonts are loaded
 SplashScreen.preventAutoHideAsync();
@@ -29,6 +32,8 @@ export default function RootLayout() {
 
    });
 
+   const session = authClient.getSession()
+
    useEffect(() => {
       if (loaded || error) {
          SplashScreen.hideAsync();
@@ -41,22 +46,23 @@ export default function RootLayout() {
 
 
    return (
-      <ThemeProvider value={NAV_THEME['dark']}>
-         <KeyboardProvider>
-            <StatusBar style="dark" />
-            <Stack>
-               <Stack.Protected guard={true}>
-                  <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-                  <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
-
-               </Stack.Protected>
-               <Stack.Screen name="index" options={{ headerShown: false }} />
-               <Stack.Screen name="login" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
-               <Stack.Screen name="register" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
-               <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-            </Stack>
-            <PortalHost />
-         </KeyboardProvider>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+         <ThemeProvider value={NAV_THEME['dark']}>
+            <KeyboardProvider>
+               <StatusBar style="dark" />
+               <Stack>
+                  <Stack.Protected guard={true}>
+                     <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+                     <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+                  </Stack.Protected>
+                  <Stack.Screen name="index" options={{ headerShown: false }} />
+                  <Stack.Screen name="login" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
+                  <Stack.Screen name="register" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
+                  <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+               </Stack>
+               <PortalHost />
+            </KeyboardProvider>
+         </ThemeProvider>
+      </QueryClientProvider>
    );
 }

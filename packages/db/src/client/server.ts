@@ -3,45 +3,45 @@ import { createClient } from "@libsql/client";
 import * as schema from "../schema";
 
 export interface ServerDatabaseConfig {
-  url: string;
-  authToken?: string;
+   url: string;
+   authToken?: string;
 }
 
 export class ServerDatabase {
-  private client: any;
-  private db: any;
+   private client: any;
+   private db: any;
 
-  constructor(config: ServerDatabaseConfig) {
-    this.client = createClient({
-      url: config.url,
-      authToken: config.authToken,
-    });
+   constructor(config: ServerDatabaseConfig) {
+      this.client = createClient({
+         url: config.url,
+         authToken: config.authToken,
+      });
 
-    this.db = drizzle(this.client, { schema });
-  }
+      this.db = drizzle(this.client, { schema });
+   }
 
-  // Get the Drizzle instance for database operations
-  get database() {
-    return this.db;
-  }
+   // Get the Drizzle instance for database operations
+   get database() {
+      return this.db;
+   }
 
-  // Execute a transaction
-  async transaction<T>(callback: (tx: any) => Promise<T>): Promise<T> {
-    return await this.db.transaction(callback);
-  }
+   // Execute a transaction
+   async transaction<T>(callback: (tx: any) => Promise<T>): Promise<T> {
+      return await this.db.transaction(callback);
+   }
 
-  // Close the database connection
-  async close(): Promise<void> {
-    await this.client.close();
-  }
+   // Close the database connection
+   async close(): Promise<void> {
+      await this.client.close();
+   }
 
-  // Check if database is ready
-  isReady(): boolean {
-    return this.client && this.db;
-  }
+   // Check if database is ready
+   isReady(): boolean {
+      return this.client && this.db;
+   }
 }
 
 // Factory function to create server database instance
 export function createServerDatabase(config: ServerDatabaseConfig): ServerDatabase {
-  return new ServerDatabase(config);
+   return new ServerDatabase(config);
 }

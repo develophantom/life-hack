@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
+import { ConnectionStatusIndicator, ConnectionStatusDot } from '@/components/connection-status-indicator';
 import { Link } from 'expo-router';
 import {
    TargetIcon,
@@ -15,10 +16,15 @@ import { fontStyles } from '@/lib/fonts';
 
 export default function LandingPage() {
 
+
    return (
       <>
          <View className="flex-[.4] justify-end bg-background px-6">
-            <Text className="text-foreground text-4xl mb-3" style={fontStyles.black}>Welcome!</Text>
+            <ConnectionStatusDot />
+
+            <View className="flex-row items-center justify-between mb-4">
+               <Text className="text-foreground text-4xl" style={fontStyles.black}>Welcome!</Text>
+            </View>
          </View>
          <ScrollView className="flex-1 bg-background" showsVerticalScrollIndicator={false}>
             {/* Header */}
